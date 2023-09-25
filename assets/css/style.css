@@ -29,6 +29,14 @@ body {
 	min-height: 25vh;
 	width: 100%;
 }
+#title {
+	text-align: center;
+	color: #fff;
+	letter-spacing: 0.20rem;
+	margin-top: 50px;
+	margin-bottom: 20px;
+	max-width: 480px;
+}
 footer {
 	position: relative;
 	bottom: 0;
