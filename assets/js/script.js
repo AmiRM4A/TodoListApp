@@ -2,6 +2,9 @@ const $ = document;
 const todoInput = $.querySelector('.todo-input');
 const addTaskBtn = $.querySelector('.todo-btn');
 const tasksCon = $.querySelector('.todo');
+const menuBg = $.querySelector('.menu-bg');
+const closeBgBtn = $.querySelector('.menu-bg .fa-times');
+const menuBtn = $.querySelector(".menu-btn");
 
 let tasks;
 
@@ -96,7 +99,6 @@ function addTask(taskData) {
 }
 
 function addTodoHandler() {
-	event.preventDefault();
 	const taskName = todoInput.value;
 	if (!taskName) return;
 	addTask(taskName);
@@ -107,12 +109,28 @@ function removeTaskHandler() {
 	removeTask(taskElem);
 }
 
+function showMenuBg() {
+	menuBg.classList.toggle('show-menu-bg');
+}
+
+function showMenu() {
+	menuBtn.classList.toggle("menu-open");
+	showMenuBg();
+}
+
 function taskConHandler() {
 	if (event.target.classList.contains('fa-times')) {
 		removeTaskHandler();
 	}
 }
 
+function menuBgHandler() {
+	if (event.target.classList.contains('fa-times')) showMenuBg();
+	console.log(event);
+}
+
 window.addEventListener('load', initialize);
 addTaskBtn.addEventListener('click', addTodoHandler);
 tasksCon.addEventListener('click', taskConHandler);
+menuBg.addEventListener('click', menuBgHandler);
+menuBtn.addEventListener("click", showMenu);

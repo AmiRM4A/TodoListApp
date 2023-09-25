@@ -181,6 +181,87 @@ form button {
 	opacity: 0.5;
 }
 
+.menu-btn {
+	display: block;
+	left: 3.5%;
+	padding: 3px;
+	position: absolute;
+	top: 6%;
+	width: 36px;
+	transform: translate(-50%, -50%);
+	cursor: pointer;
+}
+
+.bar {
+	background-color: #bb86fc;
+	height: 4px;
+	transition: all 200ms ease-in-out;
+	margin: 6px 0;
+}
+
+.menu-bg .fa-times,
+.menu-bg .fa-history,
+.menu-bg .fa-github,
+.menu-bg .fa-paint-roller {
+	position: absolute;
+	font-size: 24px;
+	color: #000;
+	text-decoration: none;
+}
+
+.menu-bg .fa-times {
+	right: 28%;
+	bottom: 7%;
+}
+
+.menu-bg .fa-history {
+	right: 20%;
+	bottom: 11%;
+}
+
+.menu-bg .fa-github {
+	right: 13%;
+	bottom: 18%;
+}
+
+.menu-bg .fa-paint-roller {
+	right: 7%;
+	bottom: 26%;
+}
+
+/* Menu animation
+
+/* .menu-open .bar:first-child {
+	transform: translateY(10px) rotate(45deg);
+}
+
+.menu-open .bar:nth-child(2) {
+	opacity: 0;
+} */
+
+/* .menu-open .bar:last-child {
+	transform: translateY(-10px) rotate(-45deg);
+} */
+
+.menu-bg {
+	height: 400px;
+	width: 400px;
+	background-color: #bb86fc;
+	z-index: 1;
+	position: absolute;
+	top: -400px;
+	left: -400px;
+	border-radius: 50%;
+	-webkit-transition: all .5s ease;
+	-o-transition: all .5s ease;
+	transition: all .5s ease;
+}
+
+.show-menu-bg {
+	left: -260px;
+	top: -260px;
+}
+
 footer {
 	position: relative;
 	bottom: 0;
