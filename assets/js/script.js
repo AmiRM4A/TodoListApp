@@ -96,6 +96,7 @@ function addTask(taskData) {
 }
 
 function addTodoHandler() {
+	event.preventDefault();
 	const taskName = todoInput.value;
 	if (!taskName) return;
 	addTask(taskName);

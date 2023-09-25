@@ -163,6 +163,24 @@ form button {
 	font-size: 16px;
 	font-weight: 500;
 }
+
+
+.check-btn,
+.delete-btn {
+	font-size: 19px;
+	cursor: pointer;
+	width: 2em;
+	height: 2em;
+	border-radius: 80%;
+	margin: 0 5px;
+}
+
+.completed {
+	transition: 0.2s;
+	text-decoration: line-through;
+	opacity: 0.5;
+}
+
 footer {
 	position: relative;
 	bottom: 0;
