@@ -15,6 +15,7 @@ body {
 }
 
 #header,
+#form {
 	margin: 0 1rem;
 	min-height: 10vh;
 	width: 100%;
@@ -29,6 +30,58 @@ body {
 	min-height: 25vh;
 	width: 100%;
 }
+
+form {
+	display: flex;
+	font-size: 1.7rem;
+	justify-content: center;
+	margin: 15px 0;
+	padding: 0.8rem;
+	width: 100%;
+}
+
+form input {
+	padding: 10px;
+	font-size: 17px;
+	outline: none;
+	border-top-left-radius: 17px;
+	border-bottom-left-radius: 17px;
+	max-width: 500px;
+	width: 100%;
+	background: rgb(255 255 255 / 5%);
+	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	border: 1px solid rgb(255 255 255 / 15%);
+}
+
+form input:focus {
+	opacity: 0.7;
+	color: #fff;
+}
+
+form input:hover {
+	cursor: text;
+}
+
+button {
+	border: none;
+	outline: none;
+}
+
+button:hover {
+	cursor: pointer;
+}
+
+form button {
+	background: #bb86fc;
+	padding: 10px;
+	font-size: 17px;
+	border-top-right-radius: 15px;
+	border-bottom-right-radius: 15px;
+	min-width: 100px;
+}
+
 #title {
 	text-align: center;
 	color: #fff;
@@ -36,6 +89,79 @@ body {
 	margin-top: 50px;
 	margin-bottom: 20px;
 	max-width: 480px;
+}
+
+/* Additional Styles for TODO Items */
+
+.container {
+	width: 1142px;
+	margin: 0 auto;
+}
+
+.todo {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: start;
+	-ms-flex-align: start;
+	align-items: flex-start;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	padding: 50px 0;
+}
+
+.task {
+	background: rgb(255 255 255 / 5%);
+	border-radius: 16px;
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+	flex-basis: calc(33.33333% - 30px);
+	margin: 0 15px 30px;
+	overflow: hidden;
+	border-radius: 28px;
+}
+
+.task:hover {
+	box-shadow: 0 0px 10px 0px #bb86fc;
+}
+
+.task a {
+	display: block;
+	padding: 45px 20px;
+	background-color: #000000;
+	text-decoration: none;
+	color: white;
+	overflow: hidden;
+	position: relative;
+}
+
+.task a:hover {
+	text-decoration: none;
+}
+
+.task a .fa-times {
+	position: absolute;
+	right: 5%;
+	top: 7%;
+	font-size: 18px;
+	padding: 7px;
+}
+
+.task-info {
+	min-height: 100px;
+	margin: 0 0 25px;
+	overflow: hidden;
+	font-weight: bold;
+	font-size: 30px;
+	color: #FFF;
+	z-index: 2;
+	position: relative;
+}
+
+.task-desc {
+	margin-top: 5px;
+	font-size: 16px;
+	font-weight: 500;
 }
 footer {
 	position: relative;
