@@ -20,7 +20,7 @@
       </div>
     </header>
     <section>
-      <div id="form">
+      <div id="add-task-form">
         <form>
           <input class="todo-input" type="text" placeholder="Add a task..." />
           <button class="todo-btn" type="submit">Add Task</button>
@@ -43,6 +43,32 @@
         <div class="bar"></div>
       </a>
     </section>
+
+    <!-- The Edit Task Modal -->
+    <div class="modal" id="editTaskModal">
+      <div class="modal-content">
+        <span class="close-button" id="closeEditTaskModal">&times;</span>
+        <h2>Edit Task</h2>
+        <form id="edit-task-form">
+          <input type="hidden" class="task-id" name="task-id" />
+          <label for="taskTitle">Title:</label>
+          <input type="text" id="taskTitle" name="taskTitle" /><br />
+
+          <label for="taskDescription">Description:</label>
+          <textarea id="taskDescription" name="taskDescription"></textarea
+          ><br />
+
+          <label for="taskStatus">Status:</label>
+          <select id="taskStatus" name="taskStatus">
+            <option value="not-done">Not Done</option>
+            <option value="done">Done</option></select
+          ><br />
+
+          <input type="submit" value="Save" class="save-modal" />
+        </form>
+      </div>
+    </div>
+
     <footer>
       <div>
         Created by

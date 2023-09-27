@@ -5,6 +5,7 @@ const tasksCon = $.querySelector('.todo');
 const menuBg = $.querySelector('.menu-bg');
 const closeBgBtn = $.querySelector('.menu-bg .fa-times');
 const menuBtn = $.querySelector(".menu-btn");
+const editTaskModal = $.querySelector('#editTaskModal');
 
 let tasks;
 
@@ -41,19 +42,18 @@ function getCurrentDate() {
 }
 
 function createTaskObj(taskName) {
-	return { id: getLastId() + 1, name: taskName, createdAt: getCurrentDate(), status: false }
+	return { id: getLastId() + 1, name: taskName, desc: '', createdAt: getCurrentDate(), status: false }
 }
 
 function createTaskElem(taskData) {
 	return `
         <div class="task" data-task-id=${taskData.id}>
           <a href="">
+		  	<span class="fas fa-edit"></span>
             <span class="fas fa-times"></span>
             <div class="task-info">
               <div class="task-title">${taskData.name}</div>
-              <div class="task-desc">
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
-              </div>
+              <div class="task-desc">${taskData.desc}</div>
             </div>
             <span class="fas fa-info-circle"></span>
 			Created:
@@ -68,9 +68,8 @@ function resetInput() {
 }
 
 function selectTask(taskId) {
-
+	return tasksCon.querySelector(`[data-task-id = "${taskId}"]`) || null;
 }
-
 function getTaskId(taskElem) {
 	return Number(taskElem.dataset.taskId);
 }
@@ -104,33 +103,100 @@ function addTodoHandler() {
 	addTask(taskName);
 }
 
-function removeTaskHandler() {
-	const taskElem = event.target.parentElement.parentElement;
+function removeTaskHandler(taskElem) {
 	removeTask(taskElem);
 }
 
-function showMenuBg() {
+function showModal(modalElem) {
+	const modalDisplay = getComputedStyle(modalElem).display;
+	if (!modalDisplay) return;
+	modalElem.style.display = (modalDisplay == 'none') ? 'block' : 'none';
+}
+
+function toggleEditModal() {
+	showModal(editTaskModal);
+}
+
+function fillModalInput(taskElem) {
+	const modalId = editTaskModal.querySelector('.task-id');
+	const modalTitle = editTaskModal.querySelector('#taskTitle');
+	const modalDesc = editTaskModal.querySelector('#taskDescription');
+	const modalStatus = editTaskModal.querySelector('#taskStatus');
+	const taskId = getTaskId(taskElem);
+	modalId.value = taskId;
+	modalTitle.value = taskElem.querySelector('.task-title').textContent;
+	modalDesc.value = taskElem.querySelector('.task-desc').textContent;
+}
+
+function editTaskHandler(taskElem) {
+	fillModalInput(taskElem);
+	toggleEditModal();
+}
+
+function toggleMenu() {
+	menuBtn.classList.toggle("menu-open");
 	menuBg.classList.toggle('show-menu-bg');
 }
 
-function showMenu() {
-	menuBtn.classList.toggle("menu-open");
-	showMenuBg();
+function taskConHandler() {
+	event.preventDefault();
+	const taskElem = event.target.parentElement.parentElement;
+	if (event.target.classList.contains('fa-times')) removeTaskHandler(taskElem);
+	if (event.target.classList.contains('fa-edit')) editTaskHandler(taskElem);
 }
 
-function taskConHandler() {
-	if (event.target.classList.contains('fa-times')) {
-		removeTaskHandler();
+function updateStorageTask(taskData) {
+	const index = tasks.findIndex(task => Number(task.id) === Number(taskData.id));
+	if (index != -1) {
+		tasks[index].name = taskData.name;
+		tasks[index].desc = taskData.desc;
+		tasks[index].status = taskData.status;
+		setToStorage('tasks', tasks);
 	}
 }
 
+function updateTask(taskData) {
+	const taskElem = selectTask(Number(taskData.id));
+	if (taskElem != null) {
+		taskElem.querySelector('.task-title').textContent = taskData.name;
+		taskElem.querySelector('.task-desc').textContent = taskData.desc;
+	}
+}
+
+function saveModalHandler() {
+	const form = new FormData(editTaskModal.querySelector('form'));
+	const data = {
+		id: form.get('task-id'),
+		name: form.get('taskTitle'),
+		desc: form.get('taskDescription'),
+		status: form.get('taskStatus')
+	}
+	updateStorageTask(data);
+	updateTask(data);
+	toggleEditModal();
+}
+
 function menuBgHandler() {
-	if (event.target.classList.contains('fa-times')) showMenuBg();
-	console.log(event);
+	if (event.target.classList.contains('fa-times')) toggleMenu();
+}
+
+function resetModal() {
+	const taskId = Number(editTaskModal.querySelector('.task-id').value);
+	const taskData = tasks.find(task => task.id === taskId);
+	if (taskData) {
+		fillModalInput()
+	}
+}
+
+
+function editTaskModalHandler() {
+	if (event.target.classList.contains('close-button')) toggleEditModal();
+	if (event.target.classList.contains('save-modal')) saveModalHandler();
 }
 
 window.addEventListener('load', initialize);
 addTaskBtn.addEventListener('click', addTodoHandler);
 tasksCon.addEventListener('click', taskConHandler);
 menuBg.addEventListener('click', menuBgHandler);
-menuBtn.addEventListener("click", showMenu);
+menuBtn.addEventListener("click", toggleMenu);
+editTaskModal.addEventListener('click', editTaskModalHandler);
