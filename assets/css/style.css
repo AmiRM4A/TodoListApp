@@ -4,6 +4,11 @@
 	box-sizing: border-box;
 }
 
+:root {
+	--pink: #bb86fc;
+	--pink-hover: #a978eb;
+}
+
 body {
 	align-items: center;
 	display: flex;
@@ -75,12 +80,16 @@ button:hover {
 }
 
 #add-task-form button {
-	background: #bb86fc;
+	background: var(--pink);
 	padding: 10px;
 	font-size: 17px;
 	border-top-right-radius: 15px;
 	border-bottom-right-radius: 15px;
 	min-width: 100px;
+}
+
+#add-task-form button:hover {
+	background-color: var(--pink-hover);
 }
 
 #title {
@@ -123,7 +132,7 @@ button:hover {
 }
 
 .task:hover {
-	box-shadow: 0 0px 10px 0px #bb86fc;
+	box-shadow: 0 0px 10px 0px var(--pink-hover);
 }
 
 .task a {
@@ -258,12 +267,12 @@ input[type="button"] {
 }
 
 #editTaskModal input[type="submit"] {
-	background-color: #bb86fc;
+	background-color: var(--pink);
 	color: #000000;
 }
 
 #editTaskModal input[type="submit"]:hover {
-	background-color: #a978eb;
+	background-color: var(--pink-hover);
 }
 
 .menu-btn {
@@ -278,7 +287,7 @@ input[type="button"] {
 }
 
 .bar {
-	background-color: #bb86fc;
+	background-color: var(--pink);
 	height: 4px;
 	transition: all 200ms ease-in-out;
 	margin: 6px 0;
@@ -331,7 +340,7 @@ input[type="button"] {
 .menu-bg {
 	height: 400px;
 	width: 400px;
-	background-color: #bb86fc;
+	background-color: var(--pink);
 	z-index: 1;
 	position: absolute;
 	top: -400px;
