@@ -1,32 +1,48 @@
+/* Reset default margin, padding, and box-sizing for all elements */
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 }
 
+/* Define custom CSS variables for colors */
 :root {
 	--pink: #bb86fc;
 	--pink-hover: #a978eb;
 }
 
+/* Style the body of the webpage */
 body {
 	align-items: center;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	background: #121212 !important;
+	/* Dark background color */
 	font-family: 'Work Sans', sans-serif;
 	min-height: 100vh;
 }
 
-#header,
-#add-task-form from {
+/* Define common styles for buttons and buttons with class "btn" */
+.btn,
+button {
+	border: none;
+	outline: none;
+	padding: 10px 20px;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+/* Style the header and the form within #tasksSection */
+header,
+#tasksSection form {
 	margin: 0 1rem;
 	min-height: 10vh;
 	width: 100%;
 }
 
-#header {
+/* Style the header */
+header {
 	align-items: center;
 	display: flex;
 	flex-direction: column;
@@ -36,7 +52,8 @@ body {
 	width: 100%;
 }
 
-#add-task-form form {
+/* Style the form within #tasksSection */
+#tasksSection form {
 	display: flex;
 	text-align: center;
 	font-size: 1.7rem;
@@ -46,7 +63,8 @@ body {
 	width: 100%;
 }
 
-#add-task-form input {
+/* Style the input for adding tasks */
+#tasksSection input {
 	padding: 10px;
 	font-size: 17px;
 	outline: none;
@@ -61,25 +79,19 @@ body {
 	border: 1px solid rgb(255 255 255 / 15%);
 }
 
-#add-task-form input:focus {
+/* Style the input when focused */
+#tasksSection input:focus {
 	opacity: 0.7;
 	color: #fff;
 }
 
-#add-task-form input:hover {
+/* Style the input on hover */
+#tasksSection input:hover {
 	cursor: text;
 }
 
-button {
-	border: none;
-	outline: none;
-}
-
-button:hover {
-	cursor: pointer;
-}
-
-#add-task-form button {
+/* Style the button for adding tasks */
+#tasksSection button {
 	background: var(--pink);
 	padding: 10px;
 	font-size: 17px;
@@ -88,10 +100,12 @@ button:hover {
 	min-width: 100px;
 }
 
-#add-task-form button:hover {
+/* Style the button on hover */
+#tasksSection button:hover {
 	background-color: var(--pink-hover);
 }
 
+/* Style the title */
 #title {
 	text-align: center;
 	color: #fff;
@@ -101,13 +115,13 @@ button:hover {
 	max-width: 480px;
 }
 
-/* Additional Styles for TODO Items */
-
+/* Styles for todo items container */
 .container {
 	width: 1142px;
 	margin: 0 auto;
 }
 
+/* Styles for individual todo items */
 .todo {
 	display: -webkit-box;
 	display: -ms-flexbox;
@@ -120,6 +134,7 @@ button:hover {
 	padding: 50px 0;
 }
 
+/* Style each task item */
 .task {
 	background: rgb(255 255 255 / 5%);
 	border-radius: 16px;
@@ -131,11 +146,13 @@ button:hover {
 	border-radius: 28px;
 }
 
+/* Style each task item on hover */
 .task:hover {
 	box-shadow: 0 0px 10px 0px var(--pink-hover);
 }
 
-.task a {
+/* Style links within task items */
+.task>div {
 	display: block;
 	padding: 45px 20px;
 	background-color: #000000;
@@ -143,29 +160,30 @@ button:hover {
 	color: white;
 	overflow: hidden;
 	position: relative;
+	cursor: pointer;
 }
 
-.task a:hover {
-	text-decoration: none;
-}
-
-.task a .fa-times,
-.task a .fa-edit {
+/* Style icons within task items */
+.task .fa-times,
+.task .fa-edit {
 	position: absolute;
 	font-size: 18px;
 	padding: 7px;
 }
 
-.task a .fa-times {
+/* Position the delete icon */
+.task .fa-times {
 	right: 5%;
 	top: 7%;
 }
 
-.task a .fa-edit {
+/* Position the edit icon */
+.task .fa-edit {
 	right: 10%;
 	top: 7%;
 }
 
+/* Style task information */
 .task-info {
 	min-height: 100px;
 	margin: 0 0 25px;
@@ -177,29 +195,14 @@ button:hover {
 	position: relative;
 }
 
+/* Style task description */
 .task-desc {
 	margin-top: 5px;
 	font-size: 16px;
 	font-weight: 500;
 }
 
-
-.check-btn,
-.delete-btn {
-	font-size: 19px;
-	cursor: pointer;
-	width: 2em;
-	height: 2em;
-	border-radius: 80%;
-	margin: 0 5px;
-}
-
-.completed {
-	transition: 0.2s;
-	text-decoration: line-through;
-	opacity: 0.5;
-}
-
+/* Style the modal for editing tasks */
 .modal {
 	display: none;
 	position: fixed;
@@ -212,8 +215,8 @@ button:hover {
 	overflow: hidden;
 }
 
-/* Styles for the modal content */
-#editTaskModal .modal-content {
+/* Styles for the modal content within the edit task modal */
+#taskEditModal .modalContent {
 	background-color: #121212;
 	width: 55%;
 	margin: 0 auto;
@@ -227,8 +230,8 @@ button:hover {
 	flex-direction: column;
 }
 
-/* Close button style */
-#editTaskModal .close-button {
+/* Style the close button for the modal */
+#taskEditModal .closeButton {
 	position: absolute;
 	top: 10px;
 	right: 10px;
@@ -236,21 +239,22 @@ button:hover {
 	font-size: 24px;
 }
 
-/* Form and input styles */
-#editTaskModal form {
+/* Style the form within the edit task modal */
+#taskEditModal form {
 	font-size: 18px;
 	margin-top: 20px;
 }
 
-#editTaskModal label {
+/* Style labels within the edit task modal */
+#taskEditModal label {
 	display: block;
-	/* Display labels as blocks for vertical alignment */
 	margin-bottom: 5px;
 }
 
-#editTaskModal input[type="text"],
-#editTaskModal textarea,
-#editTaskModal select {
+/* Style input fields, textarea, and select within the edit task modal */
+#taskEditModal #taskTitle,
+#taskEditModal #taskDescription,
+#taskEditModal #taskStatus {
 	width: 100% !important;
 	padding: 10px;
 	margin-bottom: 12px;
@@ -258,86 +262,19 @@ button:hover {
 	border-radius: 5px;
 }
 
-input[type="submit"],
-input[type="button"] {
-	border: none;
-	padding: 10px 20px;
-	border-radius: 5px;
-	cursor: pointer;
-}
-
-#editTaskModal input[type="submit"] {
+/* Style the submit button within the edit task modal */
+#taskEditModal .saveModal {
 	background-color: var(--pink);
 	color: #000000;
 }
 
-#editTaskModal input[type="submit"]:hover {
+/* Style the submit button on hover */
+#taskEditModal .saveModal:hover {
 	background-color: var(--pink-hover);
 }
 
-.menu-btn {
-	display: block;
-	left: 3.5%;
-	padding: 3px;
-	position: absolute;
-	top: 6%;
-	width: 36px;
-	transform: translate(-50%, -50%);
-	cursor: pointer;
-}
-
-.bar {
-	background-color: var(--pink);
-	height: 4px;
-	transition: all 200ms ease-in-out;
-	margin: 6px 0;
-}
-
-.menu-bg .fa-times,
-.menu-bg .fa-history,
-.menu-bg .fa-github,
-.menu-bg .fa-paint-roller {
-	position: absolute;
-	font-size: 24px;
-	color: #000;
-	text-decoration: none;
-}
-
-.menu-bg .fa-times {
-	right: 28%;
-	bottom: 7%;
-}
-
-.menu-bg .fa-history {
-	right: 20%;
-	bottom: 11%;
-}
-
-.menu-bg .fa-github {
-	right: 13%;
-	bottom: 18%;
-}
-
-.menu-bg .fa-paint-roller {
-	right: 7%;
-	bottom: 26%;
-}
-
-/* Menu animation
-
-/* .menu-open .bar:first-child {
-	transform: translateY(10px) rotate(45deg);
-}
-
-.menu-open .bar:nth-child(2) {
-	opacity: 0;
-} */
-
-/* .menu-open .bar:last-child {
-	transform: translateY(-10px) rotate(-45deg);
-} */
-
-.menu-bg {
+/* Style the menu */
+.menuContent {
 	height: 400px;
 	width: 400px;
 	background-color: var(--pink);
@@ -351,11 +288,73 @@ input[type="button"] {
 	transition: all .5s ease;
 }
 
-.show-menu-bg {
-	left: -260px;
-	top: -260px;
+.menuContent span {
+	cursor: pointer;
 }
 
+/* Style menu icons */
+.menuContent .fa-times,
+.menuContent .fa-history,
+.menuContent .fa-github,
+.menuContent .fa-paint-roller {
+	position: absolute;
+	font-size: 24px;
+	color: #000;
+	text-decoration: none;
+}
+
+/* Position the close icon within the menu */
+.menuContent .fa-times {
+	right: 28%;
+	bottom: 7%;
+}
+
+/* Position the history icon within the menu */
+.menuContent .fa-history {
+	right: 20%;
+	bottom: 11%;
+}
+
+/* Position the GitHub icon within the menu */
+.menuContent .fa-github {
+	right: 13%;
+	bottom: 18%;
+}
+
+/* Position the paint roller icon within the menu */
+.menuContent .fa-paint-roller {
+	right: 7%;
+	bottom: 26%;
+}
+
+/* Style the menu button */
+.menuBtn {
+	display: block;
+	background: none;
+	left: 3.5%;
+	padding: 3px;
+	position: absolute;
+	top: 6%;
+	width: 36px;
+	transform: translate(-50%, -50%);
+	cursor: pointer;
+}
+
+/* Style the bars within the menu button */
+.bar {
+	background-color: var(--pink);
+	height: 4px;
+	transition: all 200ms ease-in-out;
+	margin: 6px 0;
+}
+
+/* Apply the "show-menu" class to the menu to reveal it */
+.show-menu {
+	left: -260px !important;
+	top: -260px !important;
+}
+
+/* Style the footer */
 footer {
 	position: absolute;
 	bottom: 0;

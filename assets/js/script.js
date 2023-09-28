@@ -1,12 +1,14 @@
 // DOM elements
 const $ = document;
-const todoInput = $.querySelector('.todo-input');
-const addTaskBtn = $.querySelector('.todo-btn');
+const taskNameInput = $.querySelector('#taskInput');
+const addTaskBtn = $.querySelector('.todoBtn');
 const tasksCon = $.querySelector('.todo');
-const menuBg = $.querySelector('.menu-bg');
-const closeBgBtn = $.querySelector('.menu-bg .fa-times');
-const menuBtn = $.querySelector(".menu-btn");
-const editTaskModal = $.querySelector('#editTaskModal');
+const menuCon = $.querySelector('#menuContainer');
+const menuContent = $.querySelector('.menuContent');
+const closeBgBtn = $.querySelector('.menuContent .fa-times');
+const menuBtn = $.querySelector(".menuBtn");
+const taskEditModal = $.querySelector('#taskEditModal');
+const tasksSection = $.querySelector('#tasksSection');
 
 // Initialize tasks array
 let tasks;
@@ -116,7 +118,7 @@ function createTaskObj(taskName) {
 function createTaskElem(taskData) {
 	return `
         <div class="task" data-task-id=${taskData.id}>
-          <a href="">
+          <div>
             <span class="fas fa-edit"></span>
             <span class="fas fa-times"></span>
             <div class="task-info">
@@ -126,7 +128,7 @@ function createTaskElem(taskData) {
             <span class="fas fa-info-circle"></span>
             Created:
             <span style="color: #bb86fc;"> ${taskData.createdAt} </span>
-          </a>
+          </div>
         </div>
 	`;
 }
@@ -135,7 +137,7 @@ function createTaskElem(taskData) {
  * Resets the input field.
  */
 function resetInput() {
-	todoInput.value = '';
+	taskNameInput.value = '';
 }
 
 /**
@@ -194,8 +196,8 @@ function addTask(taskData) {
 /**
  * Handles adding a task when the "Add" button is clicked.
  */
-function addTodoHandler() {
-	const taskName = todoInput.value;
+function handleAddTaskBtnClick() {
+	const taskName = taskNameInput.value;
 	if (!taskName) return;
 	addTask(taskName);
 }
@@ -204,7 +206,7 @@ function addTodoHandler() {
  * Shows or hides a modal element.
  * @param {Element} modalElem - The modal element to be shown or hidden.
  */
-function showModal(modalElem) {
+function toggleModal(modalElem) {
 	const modalDisplay = getComputedStyle(modalElem).display;
 	if (!modalDisplay) return;
 	modalElem.style.display = (modalDisplay == 'none') ? 'block' : 'none';
@@ -214,7 +216,7 @@ function showModal(modalElem) {
  * Toggles the edit task modal.
  */
 function toggleEditModal() {
-	showModal(editTaskModal);
+	toggleModal(taskEditModal);
 }
 
 /**
@@ -222,11 +224,12 @@ function toggleEditModal() {
  * @param {Element} taskElem - The task element to retrieve data from.
  */
 function fillModalInput(taskElem) {
-	const modalId = editTaskModal.querySelector('.task-id');
-	const modalTitle = editTaskModal.querySelector('#taskTitle');
-	const modalDesc = editTaskModal.querySelector('#taskDescription');
-	const modalStatus = editTaskModal.querySelector('#taskStatus');
+	const modalId = taskEditModal.querySelector('.taskId');
+	const modalTitle = taskEditModal.querySelector('#taskTitle');
+	const modalDesc = taskEditModal.querySelector('#taskDescription');
+	const modalStatus = taskEditModal.querySelector('#taskStatus');
 	const taskId = getTaskId(taskElem);
+	console.log(modalId);
 	modalId.value = taskId;
 	modalTitle.value = taskElem.querySelector('.task-title').textContent;
 	modalDesc.value = taskElem.querySelector('.task-desc').textContent;
@@ -244,16 +247,15 @@ function editTaskHandler(taskElem) {
 /**
  * Toggles the menu by adding or removing CSS classes.
  */
-function toggleMenu() {
+function toggleMenuContent() {
 	menuBtn.classList.toggle("menu-open");
-	menuBg.classList.toggle('show-menu-bg');
+	menuContent.classList.toggle('show-menu');
 }
 
 /**
  * Handles clicks within the task container.
  */
 function taskConHandler() {
-	event.preventDefault();
 	const taskElem = event.target.parentElement.parentElement;
 	if (event.target.classList.contains('fa-times')) removeTaskHandler(taskElem);
 	if (event.target.classList.contains('fa-edit')) editTaskHandler(taskElem);
@@ -263,7 +265,7 @@ function taskConHandler() {
  * Updates task data in storage based on the provided task data.
  * @param {object} taskData - The updated task data.
  */
-function updateStorageTask(taskData) {
+function updateTaskInStorage(taskData) {
 	const index = tasks.findIndex(task => Number(task.id) === Number(taskData.id));
 	if (index != -1) {
 		tasks[index].name = taskData.name;
@@ -277,7 +279,7 @@ function updateStorageTask(taskData) {
  * Updates the displayed task with the provided task data.
  * @param {object} taskData - The updated task data.
  */
-function updateTask(taskData) {
+function updateTaskInDom(taskData) {
 	const taskElem = selectTask(Number(taskData.id));
 	if (taskElem != null) {
 		taskElem.querySelector('.task-title').textContent = taskData.name;
@@ -288,76 +290,56 @@ function updateTask(taskData) {
 /**
  * Handles saving data from the edit task modal.
  */
-function saveModalHandler() {
-	const form = new FormData(editTaskModal.querySelector('form'));
+function handleSaveModalBtnClick() {
+	const form = new FormData(taskEditModal.querySelector('form'));
 	const data = {
 		id: form.get('task-id'),
 		name: form.get('taskTitle'),
 		desc: form.get('taskDescription'),
 		status: form.get('taskStatus')
 	}
-	updateStorageTask(data);
-	updateTask(data);
+	updateTaskInStorage(data);
+	updateTaskInDom(data);
 	toggleEditModal();
 }
 
-
 /**
- * Handles clicks on the menu background to toggle the menu.
+ * Checks if an HTML element contains a specific CSS class.
+ *
+ * @param {HTMLElement} element - The HTML element to check.
+ * @param {string} className - The CSS class name to look for.
+ * @returns {boolean} - `true` if the class is found; otherwise, `false`.
  */
-function menuBgHandler() {
-	if (event.target.classList.contains('fa-times')) toggleMenu();
+function hasClass(element, className) {
+	/**
+	 * The `classList.contains` method returns a boolean indicating
+	 * whether the specified CSS class is present on the element.
+	 *
+	 * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/Element/classList}
+	 */
+	return element.classList.contains(className);
 }
 
-/**
- * Handles removing a task element and its associated data.
- * @param {Element} taskElem - The task element to be removed.
- */
-function removeTaskHandler(taskElem) {
-	removeTask(taskElem);
+// Event Handlers
+function taskEditModalHandler() {
+	if (hasClass(event.target, 'closeButton')) toggleEditModal();
+	if (hasClass(event.target, 'saveModal')) handleSaveModalBtnClick();
 }
 
-/**
- * Handles removing a task.
- * @param {Element} taskElem - The task element to be removed.
- */
-function removeTaskHandler(taskElem) {
-	removeTask(taskElem);
+function tasksSectionHandler() {
+	const taskElem = event.target.parentElement.parentElement;
+	if (hasClass(event.target, 'todoBtn')) handleAddTaskBtnClick();
+	if (hasClass(event.target, 'fa-times')) removeTask(taskElem);
+	if (hasClass(event.target, 'fa-edit')) editTaskHandler(taskElem);
 }
 
-/**
- * Handles events in the edit task modal.
- */
-function editTaskModalHandler() {
-	if (event.target.classList.contains('close-button')) toggleEditModal();
-	if (event.target.classList.contains('save-modal')) saveModalHandler();
-}
-
-/**
- * Handles events in the edit task modal.
- * If the event target contains the 'close-button' class, it closes the modal.
- * If the event target contains the 'save-modal' class, it triggers the saveModalHandler function.
- */
-function editTaskModalHandler() {
-	if (event.target.classList.contains('close-button')) toggleEditModal();
-	if (event.target.classList.contains('save-modal')) saveModalHandler();
-}
-
-/**
- * Resets the edit task modal.
- */
-function resetModal() {
-	const taskId = Number(editTaskModal.querySelector('.task-id').value);
-	const taskData = tasks.find(task => task.id === taskId);
-	if (taskData) {
-		fillModalInput();
-	}
+function menuConHandler() {
+	if (hasClass(event.target, 'menuBtn')) toggleMenuContent();
+	if (hasClass(event.target, 'fa-times')) toggleMenuContent();
 }
 
 // Event listeners
 window.addEventListener('load', initialize);
-addTaskBtn.addEventListener('click', addTodoHandler);
-tasksCon.addEventListener('click', taskConHandler);
-menuBg.addEventListener('click', menuBgHandler);
-menuBtn.addEventListener("click", toggleMenu);
-editTaskModal.addEventListener('click', editTaskModalHandler);
+tasksSection.addEventListener('click', tasksSectionHandler);
+taskEditModal.addEventListener('click', taskEditModalHandler);
+menuCon.addEventListener('click', menuConHandler);

@@ -16,23 +16,28 @@
     />
   </head>
   <body>
+    <!-- Header Section -->
     <header>
-      <div id="header">
+      <div>
+        <!-- Title of your webpage -->
         <h1 id="title">Get it done!</h1>
       </div>
     </header>
-    <section>
-      <div id="add-task-form">
+
+    <!-- Tasks Section -->
+    <section id="tasksSection">
+      <div>
         <form>
           <!-- Input for adding a task -->
           <input
-            class="todo-input"
+            id="taskInput"
             type="text"
             placeholder="Add a task..."
-            name="task-id"
+            name="todo-input"
+            autocomplete="off"
           />
           <!-- Button to add a task -->
-          <button class="todo-btn" type="submit">Add Task</button>
+          <button class="todoBtn" type="submit">Add Task</button>
         </form>
       </div>
       <div class="container">
@@ -40,29 +45,36 @@
           <!-- Tasks will be shown here -->
         </div>
       </div>
-      <div class="menu-bg">
-        <!-- Menu options and links -->
-        <a href="" class="fas fa-history"></a>
-        <a href="" class="fas fa-times"></a>
-        <a href="https://github.com/AmiRM4A" class="fa-brands fa-github"></a>
-        <a href="" class="fa-solid fa-paint-roller"></a>
-      </div>
-      <!-- Menu button -->
-      <a href="#" class="menu-btn">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-      </a>
     </section>
 
-    <!-- The Edit Task Modal -->
-    <div class="modal" id="editTaskModal">
-      <div class="modal-content">
+    <!-- Menu Section -->
+    <div id="menuContainer">
+      <div class="menuContent">
+        <!-- Menu options and links -->
+        <span class="fas fa-history"></span>
+        <span class="fas fa-times"></span>
+        <span
+          ><a href="https://github.com/AmiRM4A" class="fa-brands fa-github"></a>
+        </span>
+        <span class="fa-solid fa-paint-roller"></span>
+      </div>
+      <!-- Toggle Menu button -->
+      <button class="menuBtn">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </button>
+    </div>
+
+    <!-- Edit Task Modal Section -->
+    <div class="modal" id="taskEditModal">
+      <div class="modalContent">
         <!-- Close button for the modal -->
-        <span class="close-button" id="closeEditTaskModal">&times;</span>
+        <span class="closeButton">&times;</span>
         <h2>Edit Task</h2>
-        <form id="edit-task-form">
-          <input type="hidden" class="task-id" name="task-id" />
+        <!-- Edit Task Form -->
+        <form>
+          <input type="hidden" class="taskId" name="task-id" />
           <!-- Input for task title -->
           <label for="taskTitle">Title:</label>
           <input type="text" id="taskTitle" name="taskTitle" /><br />
@@ -77,11 +89,12 @@
             <option value="done">Done</option></select
           ><br />
           <!-- Submit button to save changes -->
-          <input type="submit" value="Save" class="save-modal" />
+          <input type="submit" value="Save" class="btn saveModal" />
         </form>
       </div>
     </div>
 
+    <!-- Footer Section -->
     <footer>
       <div>
         Created by
