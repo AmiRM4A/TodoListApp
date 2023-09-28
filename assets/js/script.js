@@ -1,11 +1,9 @@
 // DOM elements
 const $ = document;
 const taskNameInput = $.querySelector('#taskInput');
-const addTaskBtn = $.querySelector('.todoBtn');
 const tasksCon = $.querySelector('.todo');
 const menuCon = $.querySelector('#menuContainer');
 const menuContent = $.querySelector('.menuContent');
-const closeBgBtn = $.querySelector('.menuContent .fa-times');
 const menuBtn = $.querySelector(".menuBtn");
 const taskEditModal = $.querySelector('#taskEditModal');
 const tasksSection = $.querySelector('#tasksSection');
@@ -13,40 +11,7 @@ const tasksSection = $.querySelector('#tasksSection');
 // Initialize tasks array
 let tasks;
 
-/**
- * Sets data to the local storage.
- * @param {string} key - The key to store the data under.
- * @param {any} data - The data to be stored, will be JSON-stringified.
- */
-function setToStorage(key, data) {
-	localStorage.setItem(key, JSON.stringify(data));
-}
-
-/**
- * Retrieves data from the local storage.
- * @param {string} key - The key to retrieve data from.
- * @param {boolean} json - Whether to parse the retrieved data as JSON.
- * @returns {any} - The retrieved data.
- */
-function getFromStorage(key, json = true) {
-	const data = localStorage.getItem(key);
-	return json ? JSON.parse(data) : data;
-}
-
-
-// Initialize tasks from local storage
-function initialize() {
-	const storageData = getFromStorage('tasks', true);
-	if (storageData == null || typeof storageData != 'object') {
-		tasks = [];
-		return;
-	}
-	tasks = storageData;
-	tasks.forEach(task => addTask(task));
-}
-
 // --- Helper functions --- //
-
 /**
  * Retrieves the last ID among the tasks.
  * @returns {number} - The last task ID or 0 if there are no tasks.
@@ -63,7 +28,7 @@ function getLastId() {
 /**
  * Sets data to the local storage.
  * @param {string} key - The key to store the data under.
- * @param {any} data - The data to be stored, will be JSON-stringified.
+ * @param {any} data - The data to be stored, will be in JSON-stringify form.
  */
 function setToStorage(key, data) {
 	localStorage.setItem(key, JSON.stringify(data));
@@ -91,6 +56,7 @@ function initialize() {
 	}
 	tasks = storageData;
 	tasks.forEach(task => addTask(task));
+	console.log(tasks);
 }
 /**
  * Gets the current date in the format MM/DD/YYYY.
@@ -172,7 +138,7 @@ function removeTaskElem(taskElem) {
  */
 function removeTask(taskElem) {
 	const taskElemId = getTaskId(taskElem);
-	const index = tasks.findIndex(taskObj => taskObj.id == taskElemId);
+	const index = tasks.findIndex(taskObj => taskObj.id === taskElemId);
 	tasks.splice(index, 1);
 	setToStorage('tasks', tasks);
 	removeTaskElem(taskElem);
@@ -209,7 +175,7 @@ function handleAddTaskBtnClick() {
 function toggleModal(modalElem) {
 	const modalDisplay = getComputedStyle(modalElem).display;
 	if (!modalDisplay) return;
-	modalElem.style.display = (modalDisplay == 'none') ? 'block' : 'none';
+	modalElem.style.display = (modalDisplay === 'none') ? 'block' : 'none';
 }
 
 /**
@@ -227,7 +193,7 @@ function fillModalInput(taskElem) {
 	const modalId = taskEditModal.querySelector('.taskId');
 	const modalTitle = taskEditModal.querySelector('#taskTitle');
 	const modalDesc = taskEditModal.querySelector('#taskDescription');
-	const modalStatus = taskEditModal.querySelector('#taskStatus');
+	// const modalStatus = taskEditModal.querySelector('#taskStatus');
 	const taskId = getTaskId(taskElem);
 	console.log(modalId);
 	modalId.value = taskId;
@@ -253,21 +219,12 @@ function toggleMenuContent() {
 }
 
 /**
- * Handles clicks within the task container.
- */
-function taskConHandler() {
-	const taskElem = event.target.parentElement.parentElement;
-	if (event.target.classList.contains('fa-times')) removeTaskHandler(taskElem);
-	if (event.target.classList.contains('fa-edit')) editTaskHandler(taskElem);
-}
-
-/**
  * Updates task data in storage based on the provided task data.
  * @param {object} taskData - The updated task data.
  */
 function updateTaskInStorage(taskData) {
 	const index = tasks.findIndex(task => Number(task.id) === Number(taskData.id));
-	if (index != -1) {
+	if (index !== -1) {
 		tasks[index].name = taskData.name;
 		tasks[index].desc = taskData.desc;
 		tasks[index].status = taskData.status;
