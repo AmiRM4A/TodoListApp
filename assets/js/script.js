@@ -278,25 +278,21 @@ function hasClass(element, className) {
 }
 
 // Event Handlers
-function taskEditModalHandler() {
-	if (hasClass(event.target, 'closeButton')) toggleEditModal();
-	if (hasClass(event.target, 'saveModal')) handleSaveModalBtnClick();
-}
-
-function tasksSectionHandler() {
-	const taskElem = event.target.parentElement.parentElement;
-	if (hasClass(event.target, 'todoBtn')) handleAddTaskBtnClick();
-	if (hasClass(event.target, 'fa-times')) removeTask(taskElem);
-	if (hasClass(event.target, 'fa-edit')) editTaskHandler(taskElem);
-}
-
-function menuConHandler() {
-	if (hasClass(event.target, 'menuBtn')) toggleMenuContent();
-	if (hasClass(event.target, 'fa-times')) toggleMenuContent();
-}
 
 // Event listeners
 window.addEventListener('load', initialize);
-tasksSection.addEventListener('click', tasksSectionHandler);
-taskEditModal.addEventListener('click', taskEditModalHandler);
-menuCon.addEventListener('click', menuConHandler);
+tasksSection.addEventListener('click', (event) => {
+	event.preventDefault();
+	const taskElem = event.target.parentElement.parentElement;
+	if (hasClass(event.target, 'todoBtn')) handleAddTaskBtnClick();
+	else if (hasClass(event.target, 'fa-times')) removeTask(taskElem);
+	else if (hasClass(event.target, 'fa-edit')) editTaskHandler(taskElem);
+});
+taskEditModal.addEventListener('click', (event) => {
+	event.preventDefault();
+	if (hasClass(event.target, 'closeButton')) toggleEditModal();
+	else if (hasClass(event.target, 'saveModal')) handleSaveModalBtnClick();
+});
+menuCon.addEventListener('click', (event) => {
+	if (hasClass(event.target, 'menuBtn') || hasClass(event.target, 'fa-times')) toggleMenuContent();
+});
