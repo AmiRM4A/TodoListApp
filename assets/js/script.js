@@ -300,8 +300,23 @@ function getColorName(color) {
 	return colors[color];
 }
 
+
+function changeFavIcon(iconColorName) {
+	const favIcon = $.querySelector('#favIcon');
+	const favIconPath = `assets/img/icon/fav-${iconColorName}.png`;
+	favIcon.href = favIconPath;
+
+}
+function changeLogo(logoColorName) {
+	const logo = $.querySelector('#logo');
+	const logoPath = `assets/img/logo/logo-${logoColorName}.png`;
+	logo.src = logoPath;
+}
+
 function selectThemeColor(color) {
 	const colorName = getColorName(color);
+	changeFavIcon(colorName);
+	changeLogo(colorName);
 	document.documentElement.style.setProperty('--theme-color', color);
 }
 
