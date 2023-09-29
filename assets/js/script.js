@@ -46,22 +46,25 @@ function getFromStorage(key, json = true) {
 	return json ? JSON.parse(data) : data;
 }
 
+function loadStorageTasks(taskArray) {
+	tasks = taskArray;
+	tasks.forEach(task => addTask(task));
+}
+
 /**
- * Initializes tasks from local storage or sets an empty array if no data is found.
+ * Initializes data from local storage
  */
 function initialize() {
-	const storageData = getFromStorage('tasks', true);
-	if (storageData == null || typeof storageData != 'object') {
-		tasks = [];
 	const colorRgbCode = getFromStorage('theme-color', true);
 	if (colorRgbCode !== null) {
 		selectThemeColor(colorRgbCode);
 	}
+	const storageTasksArr = getFromStorage('tasks', true);
+	if (storageTasksArr !== null && typeof storageTasksArr === 'object') {
+		loadStorageTasks(storageTasksArr);
 		return;
 	}
-	tasks = storageData;
-	tasks.forEach(task => addTask(task));
-	console.log(tasks);
+	tasks = [];
 }
 /**
  * Gets the current date in the format MM/DD/YYYY.
@@ -301,7 +304,6 @@ function selectThemeColor(color) {
 	const colorName = getColorName(color);
 	document.documentElement.style.setProperty('--theme-color', color);
 }
-
 
 // Event listeners
 window.addEventListener('load', initialize);

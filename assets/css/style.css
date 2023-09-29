@@ -24,7 +24,14 @@ body {
 	background: #121212 !important;
 	/* Dark background color */
 	font-family: 'Work Sans', sans-serif;
+}
+
+.container {
 	min-height: 100vh;
+}
+
+a {
+	text-decoration: none;
 }
 
 /* Define common styles for buttons and buttons with class "btn" */
@@ -76,7 +83,6 @@ nav {
 
 /* Style the input when focused */
 #tasksSection input:focus {
-	opacity: 0.7;
 	color: #fff;
 }
 
@@ -87,6 +93,7 @@ nav {
 
 /* Style the button for adding tasks */
 #tasksSection button {
+	border-radius: unset;
 	background: var(--theme-color);
 	padding: 10px;
 	font-size: 17px;
