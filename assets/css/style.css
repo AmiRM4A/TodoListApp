@@ -7,16 +7,20 @@
 
 /* Define custom CSS variables for colors */
 :root {
+	--theme-color: #bb86fc;
 	--pink: #bb86fc;
-	--pink-hover: #a978eb;
+	--teal: #00bfa5;
+	--indigo: #3d5afe;
+	--red: #ff5252;
+	--green: #64dd17;
 }
 
 /* Style the body of the webpage */
 body {
-	align-items: center;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+	/* align-items: center; */
+	/* display: flex; */
+	/* flex-direction: column; */
+	/* justify-content: center; */
 	background: #121212 !important;
 	/* Dark background color */
 	font-family: 'Work Sans', sans-serif;
@@ -33,34 +37,25 @@ button {
 	cursor: pointer;
 }
 
-/* Style the header and the form within #tasksSection */
-header,
+nav {
+	display: flex;
+	justify-content: space-between;
+	padding: 20px 30px 0;
+}
+
 #tasksSection form {
 	margin: 0 1rem;
 	min-height: 10vh;
 	width: 100%;
 }
 
-/* Style the header */
-header {
-	align-items: center;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	font-size: 1.5rem;
-	min-height: 25vh;
-	width: 100%;
-}
-
 /* Style the form within #tasksSection */
 #tasksSection form {
 	display: flex;
-	text-align: center;
 	font-size: 1.7rem;
 	justify-content: center;
 	margin: 15px 0;
 	padding: 0.8rem;
-	width: 100%;
 }
 
 /* Style the input for adding tasks */
@@ -92,7 +87,7 @@ header {
 
 /* Style the button for adding tasks */
 #tasksSection button {
-	background: var(--pink);
+	background: var(--theme-color);
 	padding: 10px;
 	font-size: 17px;
 	border-top-right-radius: 15px;
@@ -100,13 +95,14 @@ header {
 	min-width: 100px;
 }
 
-/* Style the button on hover */
-#tasksSection button:hover {
-	background-color: var(--pink-hover);
+#tasksHeader {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	font-size: 1.5rem;
 }
 
-/* Style the title */
-#title {
+#tasksSection h1 {
 	text-align: center;
 	color: #fff;
 	letter-spacing: 0.20rem;
@@ -116,7 +112,7 @@ header {
 }
 
 /* Styles for todo items container */
-.container {
+#tasksContainer {
 	width: 1142px;
 	margin: 0 auto;
 }
@@ -148,7 +144,7 @@ header {
 
 /* Style each task item on hover */
 .task:hover {
-	box-shadow: 0 0px 10px 0px var(--pink-hover);
+	box-shadow: 0 0px 10px 0px var(--theme-color);
 }
 
 /* Style links within task items */
@@ -177,10 +173,18 @@ header {
 	top: 7%;
 }
 
+.task .fa-times:hover {
+	color: var(--theme-color);
+}
+
 /* Position the edit icon */
 .task .fa-edit {
 	right: 10%;
 	top: 7%;
+}
+
+.task .fa-edit:hover {
+	color: var(--theme-color);
 }
 
 /* Style task information */
@@ -264,20 +268,15 @@ header {
 
 /* Style the submit button within the edit task modal */
 #taskEditModal .saveModal {
-	background-color: var(--pink);
+	background-color: var(--theme-color);
 	color: #000000;
-}
-
-/* Style the submit button on hover */
-#taskEditModal .saveModal:hover {
-	background-color: var(--pink-hover);
 }
 
 /* Style the menu */
 .menuContent {
 	height: 400px;
 	width: 400px;
-	background-color: var(--pink);
+	background-color: var(--theme-color);
 	z-index: 1;
 	position: absolute;
 	top: -400px;
@@ -331,18 +330,17 @@ header {
 .menuBtn {
 	display: block;
 	background: none;
-	left: 3.5%;
+	/* left: 3.5%; */
 	padding: 3px;
-	position: absolute;
-	top: 6%;
+	/* position: absolute; */
+	/* top: 6%; */
 	width: 36px;
-	transform: translate(-50%, -50%);
-	cursor: pointer;
+	/* transform: translate(-50%, -50%); */
 }
 
 /* Style the bars within the menu button */
 .bar {
-	background-color: var(--pink);
+	background-color: var(--theme-color);
 	height: 4px;
 	transition: all 200ms ease-in-out;
 	margin: 6px 0;
@@ -354,13 +352,78 @@ header {
 	top: -260px !important;
 }
 
+.colorItem {
+	border: 0.5px solid #333;
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	right: 0;
+	bottom: 0;
+	border-radius: 100%;
+}
+
+.colorItem:hover {
+	opacity: 0.8;
+}
+
+.colorMenu .fa-times {
+	bottom: 27%;
+}
+
+.teal {
+	background-color: var(--teal);
+	bottom: 28%;
+	right: 5%;
+}
+
+.indigo {
+	background-color: var(--indigo);
+	bottom: 21.5%;
+	right: 9%;
+}
+
+.red {
+	background-color: var(--red);
+	bottom: 15%;
+	right: 14%;
+}
+
+.pink {
+	background-color: var(--pink);
+	bottom: 9.5%;
+	right: 21%;
+}
+
+.green {
+	background-color: var(--green);
+	bottom: 5%;
+	right: 28%;
+}
+
+.teal-theme button {
+	background-color: var(--teal);
+}
+
+#taskEditModal .saveModal:hover,
+#tasksSection input:focus,
+#tasksSection button:hover,
+.menuBtn:hover,
+.menuContent span:hover,
+a:hover {
+	opacity: 0.7;
+}
+
 /* Style the footer */
 footer {
-	position: absolute;
-	bottom: 0;
+	/* position: absolute; */
+	/* bottom: 0; */
 	text-align: center;
 	color: #fff;
 	width: 100%;
 	padding: 20px;
 	background-color: #000000;
+}
+
+footer a {
+	color: var(--theme-color);
 }

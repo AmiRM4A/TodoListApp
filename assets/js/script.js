@@ -7,6 +7,7 @@ const menuContent = $.querySelector('.menuContent');
 const menuBtn = $.querySelector(".menuBtn");
 const taskEditModal = $.querySelector('#taskEditModal');
 const tasksSection = $.querySelector('#tasksSection');
+const colorsMenu = $.querySelector('.colorMenu');
 
 // Initialize tasks array
 let tasks;
@@ -52,6 +53,10 @@ function initialize() {
 	const storageData = getFromStorage('tasks', true);
 	if (storageData == null || typeof storageData != 'object') {
 		tasks = [];
+	const colorRgbCode = getFromStorage('theme-color', true);
+	if (colorRgbCode !== null) {
+		selectThemeColor(colorRgbCode);
+	}
 		return;
 	}
 	tasks = storageData;
@@ -93,7 +98,7 @@ function createTaskElem(taskData) {
             </div>
             <span class="fas fa-info-circle"></span>
             Created:
-            <span style="color: #bb86fc;"> ${taskData.createdAt} </span>
+            <span style="color: var(--theme-color);"> ${taskData.createdAt} </span>
           </div>
         </div>
 	`;
@@ -277,7 +282,26 @@ function hasClass(element, className) {
 	return element.classList.contains(className);
 }
 
-// Event Handlers
+function toggleColorMenu() {
+	colorsMenu.classList.toggle('show-menu');
+}
+
+function getColorName(color) {
+	const colors = {
+		'rgb(187, 134, 252)': 'pink',
+		'rgb(0, 191, 165)': 'teal',
+		'rgb(61, 90, 254)': 'indigo',
+		'rgb(255, 82, 82)': 'red',
+		'rgb(100, 221, 23)': 'green'
+	};
+	return colors[color];
+}
+
+function selectThemeColor(color) {
+	const colorName = getColorName(color);
+	document.documentElement.style.setProperty('--theme-color', color);
+}
+
 
 // Event listeners
 window.addEventListener('load', initialize);
@@ -294,5 +318,15 @@ taskEditModal.addEventListener('click', (event) => {
 	else if (hasClass(event.target, 'saveModal')) handleSaveModalBtnClick();
 });
 menuCon.addEventListener('click', (event) => {
-	if (hasClass(event.target, 'menuBtn') || hasClass(event.target, 'fa-times')) toggleMenuContent();
+	const target = event.target;
+	if (hasClass(target, 'menuClose')) toggleMenuContent();
+	if (hasClass(target, 'fa-paint-roller') || hasClass(target, 'colorMenuClose')) toggleColorMenu();
+	if (hasClass(target, 'colorItem')) {
+		const colorRgbCode = getComputedStyle(target)['background-color'];
+		selectThemeColor(colorRgbCode);
+		setToStorage('theme-color', colorRgbCode);
+	};
+});
+$.querySelector('nav').addEventListener('click', (event) => {
+	if (hasClass(event.target, 'menuBtn')) toggleMenuContent();
 });
