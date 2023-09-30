@@ -337,8 +337,8 @@ taskEditModal.addEventListener('click', (event) => {
 menuCon.addEventListener('click', (event) => {
 	const target = event.target;
 	if (hasClass(target, 'menuClose')) toggleMenuContent();
-	if (hasClass(target, 'fa-paint-roller') || hasClass(target, 'colorMenuClose')) toggleColorMenu();
-	if (hasClass(target, 'colorItem')) {
+	else if (hasClass(target, 'fa-paint-roller') || hasClass(target, 'colorMenuClose')) toggleColorMenu();
+	else if (hasClass(target, 'colorItem')) {
 		const colorRgbCode = getComputedStyle(target)['background-color'];
 		selectThemeColor(colorRgbCode);
 		setToStorage('theme-color', colorRgbCode);

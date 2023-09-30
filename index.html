@@ -4,9 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TaskTales</title>
-    <!-- Link to external CSS file -->
     <link rel="stylesheet" href="assets/css/style.css" />
-    <!-- Link to Font Awesome CSS -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -14,7 +12,6 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <!-- Link to favicon file -->
     <link
       id="favIcon"
       rel="shortcut icon"
@@ -24,17 +21,13 @@
   </head>
   <body>
     <div class="container">
-      <!-- Header Section -->
       <header>
-        <!-- Navbar -->
         <nav>
-          <!-- Toggle Menu button -->
           <button class="menuBtn">
             <div class="bar"></div>
             <div class="bar"></div>
             <div class="bar"></div>
           </button>
-          <!-- Logo -->
           <div>
             <a href="">
               <img id="logo" src="assets/img/logo/logo-pink.png" alt="Logo" />
@@ -42,22 +35,19 @@
           </div>
         </nav>
       </header>
-      <!-- Menu -->
       <div id="menuContainer">
         <div class="menuContent">
-          <!-- Menu options and links -->
           <span class="fas fa-history"></span>
           <span class="fas fa-times menuClose"></span>
           <span
             ><a
               href="https://github.com/AmiRM4A"
               class="fa-brands fa-github"
-            ></a>
-          </span>
+            ></a
+          ></span>
           <span class="fa-solid fa-paint-roller"></span>
         </div>
         <div class="colorMenu menuContent">
-          <!-- Menu colors -->
           <span class="fas fa-times colorMenuClose"></span>
           <span class="colorItem teal"></span>
           <span class="colorItem indigo"></span>
@@ -66,12 +56,10 @@
           <span class="colorItem green"></span>
         </div>
       </div>
-      <!-- Tasks Managing Section -->
       <section id="tasksSection">
         <div id="tasksHeader">
           <h1>Get it done!</h1>
           <form>
-            <!-- Input for adding a task -->
             <input
               id="taskInput"
               type="text"
@@ -79,7 +67,6 @@
               name="todo-input"
               autocomplete="off"
             />
-            <!-- Button to add a task -->
             <button class="todoBtn" type="submit">Add Task</button>
           </form>
         </div>
@@ -89,45 +76,32 @@
           </div>
         </div>
       </section>
-      <!-- Task Edit Modal -->
       <div class="modal" id="taskEditModal">
         <div class="modalContent">
-          <!-- Close button for the modal -->
           <span class="closeButton">&times;</span>
           <h2>Edit Task</h2>
-          <!-- Edit Task Form -->
           <form>
             <input type="hidden" class="taskId" name="task-id" />
-            <!-- Input for task title -->
             <label for="taskTitle">Title:</label>
-            <input type="text" id="taskTitle" name="taskTitle" /><br />
-            <!-- Textarea for task description -->
+            <input type="text" id="taskTitle" name="taskTitle" />
             <label for="taskDescription">Description:</label>
-            <textarea id="taskDescription" name="taskDescription"></textarea
-            ><br />
-            <!-- Dropdown for task status -->
+            <textarea id="taskDescription" name="taskDescription"></textarea>
             <label for="taskStatus">Status:</label>
             <select id="taskStatus" name="taskStatus">
               <option value="not-done">Not Done</option>
-              <option value="done">Done</option></select
-            ><br />
-            <!-- Submit button to save changes -->
+              <option value="done">Done</option>
+            </select>
             <button class="btn saveModal">Save</button>
           </form>
         </div>
       </div>
     </div>
-
-    <!-- Footer Section -->
     <footer>
       <div>
         Created by
-        <!-- Link to GitHub profile -->
         <a href="https://github.com/AmiRM4A">Amir</a>
       </div>
     </footer>
-
-    <!-- Link to external JavaScript file -->
     <script src="assets/js/script.js"></script>
   </body>
 </html>
