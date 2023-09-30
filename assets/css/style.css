@@ -5,6 +5,11 @@
 	box-sizing: border-box;
 }
 
+/* Remove underlines from links */
+a {
+	text-decoration: none;
+}
+
 /* Define custom CSS variables for colors */
 :root {
 	--theme-color: #bb86fc;
@@ -15,26 +20,18 @@
 	--green: #64dd17;
 }
 
-/* Style the body of the webpage */
+/* General styles for the body */
 body {
-	/* align-items: center; */
-	/* display: flex; */
-	/* flex-direction: column; */
-	/* justify-content: center; */
-	background: #121212 !important;
-	/* Dark background color */
+	background: #121212;
 	font-family: 'Work Sans', sans-serif;
 }
 
+/* Styles for the container */
 .container {
 	min-height: 100vh;
 }
 
-a {
-	text-decoration: none;
-}
-
-/* Define common styles for buttons and buttons with class "btn" */
+/* Styles for common buttons */
 .btn,
 button {
 	border: none;
@@ -44,28 +41,26 @@ button {
 	cursor: pointer;
 }
 
+/* Header styles */
 nav {
 	display: flex;
 	justify-content: space-between;
 	padding: 1em 1.5em 0;
 }
 
+/* Styles for the form within #tasksSection */
 #tasksSection form {
-	margin: 0 1rem;
+	margin: 1rem;
 	min-height: 10vh;
 	width: 100%;
-}
-
-/* Style the form within #tasksSection */
-#tasksSection form {
 	display: flex;
+	align-items: center;
 	font-size: 1.7rem;
-	justify-content: center;
-	margin: 15px 0;
 	padding: 0.8rem;
+	justify-content: center;
 }
 
-/* Style the input for adding tasks */
+/* Input field for adding tasks */
 #tasksSection input {
 	padding: 10px;
 	font-size: 17px;
@@ -81,17 +76,17 @@ nav {
 	border: 1px solid rgb(255 255 255 / 15%);
 }
 
-/* Style the input when focused */
+/* Input field styles when focused */
 #tasksSection input:focus {
 	color: #fff;
 }
 
-/* Style the input on hover */
+/* Input field styles on hover */
 #tasksSection input:hover {
 	cursor: text;
 }
 
-/* Style the button for adding tasks */
+/* Button for adding tasks */
 #tasksSection button {
 	border-radius: unset;
 	background: var(--theme-color);
@@ -102,6 +97,7 @@ nav {
 	min-width: 100px;
 }
 
+/* Header styles for tasks section */
 #tasksHeader {
 	align-items: center;
 	display: flex;
@@ -109,6 +105,7 @@ nav {
 	font-size: 1.5rem;
 }
 
+/* Heading styles within tasks section */
 #tasksSection h1 {
 	text-align: center;
 	color: #fff;
@@ -118,7 +115,7 @@ nav {
 	max-width: 480px;
 }
 
-/* Styles for todo items container */
+/* Styles for tasks container */
 #tasksContainer {
 	width: 90%;
 	margin: 0 auto;
@@ -137,7 +134,7 @@ nav {
 	padding: 50px 0;
 }
 
-/* Style each task item */
+/* Styles for each task item */
 .task {
 	background: rgb(255 255 255 / 5%);
 	border-radius: 16px;
@@ -149,12 +146,12 @@ nav {
 	border-radius: 28px;
 }
 
-/* Style each task item on hover */
+/* Styles for task item on hover */
 .task:hover {
 	box-shadow: 0 0px 10px 0px var(--theme-color);
 }
 
-/* Style links within task items */
+/* Styles for links within task items */
 .task>div {
 	display: block;
 	padding: 45px 20px;
@@ -166,7 +163,7 @@ nav {
 	cursor: pointer;
 }
 
-/* Style icons within task items */
+/* Styles for icons within task items */
 .task .fa-times,
 .task .fa-edit {
 	position: absolute;
@@ -174,27 +171,29 @@ nav {
 	padding: 7px;
 }
 
-/* Position the delete icon */
+/* Positioning for the delete icon */
 .task .fa-times {
 	right: 5%;
 	top: 7%;
 }
 
+/* Hover styles for the delete icon */
 .task .fa-times:hover {
 	color: var(--theme-color);
 }
 
-/* Position the edit icon */
+/* Positioning for the edit icon */
 .task .fa-edit {
 	right: 10%;
 	top: 7%;
 }
 
+/* Hover styles for the edit icon */
 .task .fa-edit:hover {
 	color: var(--theme-color);
 }
 
-/* Style task information */
+/* Styles for task information */
 .task-info {
 	min-height: 100px;
 	margin: 0 0 25px;
@@ -206,14 +205,14 @@ nav {
 	position: relative;
 }
 
-/* Style task description */
+/* Styles for task description */
 .task-desc {
 	margin-top: 5px;
 	font-size: 16px;
 	font-weight: 500;
 }
 
-/* Style the modal for editing tasks */
+/* Styles for the modal for editing tasks */
 .modal {
 	display: none;
 	position: fixed;
@@ -241,7 +240,7 @@ nav {
 	flex-direction: column;
 }
 
-/* Style the close button for the modal */
+/* Styles for the close button of the modal */
 #taskEditModal .closeButton {
 	position: absolute;
 	top: 10px;
@@ -250,19 +249,19 @@ nav {
 	font-size: 24px;
 }
 
-/* Style the form within the edit task modal */
+/* Styles for the form within the edit task modal */
 #taskEditModal form {
 	font-size: 18px;
 	margin-top: 20px;
 }
 
-/* Style labels within the edit task modal */
+/* Styles for labels within the edit task modal */
 #taskEditModal label {
 	display: block;
 	margin-bottom: 5px;
 }
 
-/* Style input fields, textarea, and select within the edit task modal */
+/* Styles for input fields, textarea, and select within the edit task modal */
 #taskEditModal #taskTitle,
 #taskEditModal #taskDescription,
 #taskEditModal #taskStatus {
@@ -273,13 +272,13 @@ nav {
 	border-radius: 5px;
 }
 
-/* Style the submit button within the edit task modal */
+/* Styles for the submit button within the edit task modal */
 #taskEditModal .saveModal {
 	background-color: var(--theme-color);
 	color: #000000;
 }
 
-/* Style the menu */
+/* Styles for the menu */
 .menuContent {
 	height: 400px;
 	width: 400px;
@@ -298,7 +297,7 @@ nav {
 	cursor: pointer;
 }
 
-/* Style menu icons */
+/* Styles for menu icons */
 .menuContent .fa-times,
 .menuContent .fa-history,
 .menuContent .fa-github,
@@ -309,43 +308,40 @@ nav {
 	text-decoration: none;
 }
 
-/* Position the close icon within the menu */
+/* Positioning for the close icon within the menu */
 .menuContent .fa-times {
 	right: 28%;
 	bottom: 7%;
 }
 
-/* Position the history icon within the menu */
+/* Positioning for the history icon within the menu */
 .menuContent .fa-history {
 	right: 20%;
 	bottom: 11%;
 }
 
-/* Position the GitHub icon within the menu */
+/* Positioning for the GitHub icon within the menu */
 .menuContent .fa-github {
 	right: 13%;
 	bottom: 18%;
 }
 
-/* Position the paint roller icon within the menu */
+/* Positioning for the paint roller icon within the menu */
 .menuContent .fa-paint-roller {
 	right: 7%;
 	bottom: 26%;
 }
 
-/* Style the menu button */
+/* Styles for the menu button */
 .menuBtn {
+	cursor: pointer;
 	display: block;
 	background: none;
-	/* left: 3.5%; */
 	padding: 3px;
-	/* position: absolute; */
-	/* top: 6%; */
 	width: 36px;
-	/* transform: translate(-50%, -50%); */
 }
 
-/* Style the bars within the menu button */
+/* Styles for the bars within the menu button */
 .bar {
 	background-color: var(--theme-color);
 	height: 4px;
@@ -353,12 +349,13 @@ nav {
 	margin: 6px 0;
 }
 
-/* Apply the "show-menu" class to the menu to reveal it */
+/* Apply the "show-menu" class to reveal the menu */
 .show-menu {
 	left: -260px !important;
 	top: -260px !important;
 }
 
+/* Styles for color items */
 .colorItem {
 	border: 0.5px solid #333;
 	position: absolute;
@@ -369,14 +366,17 @@ nav {
 	border-radius: 100%;
 }
 
+/* Hover styles for color items */
 .colorItem:hover {
 	opacity: 0.8;
 }
 
+/* Position of colors menu close menu*/
 .colorMenu .fa-times {
 	bottom: 27%;
 }
 
+/* Positioning for color items */
 .teal {
 	background-color: var(--teal);
 	bottom: 28%;
@@ -407,10 +407,7 @@ nav {
 	right: 28%;
 }
 
-.teal-theme button {
-	background-color: var(--teal);
-}
-
+/* Hover and focus styles for various elements */
 #taskEditModal .saveModal:hover,
 #tasksSection input:focus,
 #tasksSection button:hover,
@@ -420,10 +417,8 @@ a:hover {
 	opacity: 0.7;
 }
 
-/* Style the footer */
+/* Footer styles */
 footer {
-	/* position: absolute; */
-	/* bottom: 0; */
 	text-align: center;
 	color: #fff;
 	width: 100%;
@@ -431,13 +426,13 @@ footer {
 	background-color: #000000;
 }
 
+/* Styles for links within the footer */
 footer a {
 	color: var(--theme-color);
 }
 
 /* Media query for screens smaller than 768px (typical mobile screens) */
 @media screen and (max-width: 768px) {
-	/* Adjust styles for small screens here */
 
 	/* Set cards to full width */
 	.task {
@@ -448,7 +443,6 @@ footer a {
 
 /* Media query for screens between 768px and 1024px (tablets) */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
-	/* Adjust styles for tablet screens here */
 
 	/* Set cards to one card per row */
 	.task {
@@ -459,7 +453,6 @@ footer a {
 
 /* Media query for screens larger than 1024px (desktop screens) */
 @media screen and (min-width: 1024px) {
-	/* Adjust styles for desktop screens here */
 
 	/* Revert cards to three cards per row */
 	.task {

@@ -1,18 +1,26 @@
 // DOM elements
 const $ = document;
-const taskNameInput = $.querySelector('#taskInput');
+const taskNameInput = $.getElementById('taskInput');
 const tasksCon = $.querySelector('.todo');
-const menuCon = $.querySelector('#menuContainer');
+const menuCon = $.getElementById('menuContainer');
 const menuContent = $.querySelector('.menuContent');
 const menuBtn = $.querySelector(".menuBtn");
-const taskEditModal = $.querySelector('#taskEditModal');
-const tasksSection = $.querySelector('#tasksSection');
+const taskEditModal = $.getElementById('taskEditModal');
+const tasksSection = $.getElementById('tasksSection');
 const colorsMenu = $.querySelector('.colorMenu');
+const colors = {
+	'rgb(187, 134, 252)': 'pink',
+	'rgb(0, 191, 165)': 'teal',
+	'rgb(61, 90, 254)': 'indigo',
+	'rgb(255, 82, 82)': 'red',
+	'rgb(100, 221, 23)': 'green'
+};
 
 // Initialize tasks array
 let tasks;
 
 // --- Helper functions --- //
+
 /**
  * Retrieves the last ID among the tasks.
  * @returns {number} - The last task ID or 0 if there are no tasks.
@@ -46,10 +54,15 @@ function getFromStorage(key, json = true) {
 	return json ? JSON.parse(data) : data;
 }
 
+/**
+ * Load tasks from local storage and populate the task list.
+ * @param {Array} taskArray - An array containing tasks retrieved from local storage.
+ */
 function loadStorageTasks(taskArray) {
 	tasks = taskArray;
 	tasks.forEach(task => addTask(task));
 }
+
 
 /**
  * Initializes data from local storage
@@ -66,6 +79,7 @@ function initialize() {
 	}
 	tasks = [];
 }
+
 /**
  * Gets the current date in the format MM/DD/YYYY.
  * @returns {string} - The current date.
@@ -89,19 +103,19 @@ function createTaskObj(taskName) {
  * @param {object} taskData - The task data.
  * @returns {string} - The HTML for the task element.
  */
-function createTaskElem(taskData) {
+function createTaskElem(taskId, taskName, taskDesc, taskCreationDate) {
 	return `
-        <div class="task" data-task-id=${taskData.id}>
+        <div class="task" data-task-id=${taskId}>
           <div>
             <span class="fas fa-edit"></span>
             <span class="fas fa-times"></span>
             <div class="task-info">
-              <div class="task-title">${taskData.name}</div>
-              <div class="task-desc">${taskData.desc}</div>
+              <div class="task-title">${taskName}</div>
+              <div class="task-desc">${taskDesc}</div>
             </div>
             <span class="fas fa-info-circle"></span>
             Created:
-            <span style="color: var(--theme-color);"> ${taskData.createdAt} </span>
+            <span style="color: var(--theme-color);"> ${taskCreationDate} </span>
           </div>
         </div>
 	`;
@@ -133,14 +147,6 @@ function getTaskId(taskElem) {
 }
 
 /**
- * Removes a task element from the DOM.
- * @param {Element} taskElem - The task element to be removed.
- */
-function removeTaskElem(taskElem) {
-	taskElem.remove();
-}
-
-/**
  * Removes a task from the tasks array and updates local storage.
  * @param {Element} taskElem - The task element to be removed.
  */
@@ -149,7 +155,7 @@ function removeTask(taskElem) {
 	const index = tasks.findIndex(taskObj => taskObj.id === taskElemId);
 	tasks.splice(index, 1);
 	setToStorage('tasks', tasks);
-	removeTaskElem(taskElem);
+	taskElem.remove();
 }
 
 /**
@@ -162,7 +168,7 @@ function addTask(taskData) {
 		tasks.push(taskData);
 		setToStorage('tasks', tasks);
 	}
-	const taskElem = createTaskElem(taskData);
+	const taskElem = createTaskElem(taskData.id, taskData.name, taskData.desc, taskData.createdAt);
 	tasksCon.insertAdjacentHTML('beforeend', taskElem);
 	resetInput();
 }
@@ -203,7 +209,6 @@ function fillModalInput(taskElem) {
 	const modalDesc = taskEditModal.querySelector('#taskDescription');
 	// const modalStatus = taskEditModal.querySelector('#taskStatus');
 	const taskId = getTaskId(taskElem);
-	console.log(modalId);
 	modalId.value = taskId;
 	modalTitle.value = taskElem.querySelector('.task-title').textContent;
 	modalDesc.value = taskElem.querySelector('.task-desc').textContent;
@@ -235,7 +240,7 @@ function updateTaskInStorage(taskData) {
 	if (index !== -1) {
 		tasks[index].name = taskData.name;
 		tasks[index].desc = taskData.desc;
-		tasks[index].status = taskData.status;
+		tasks[index].status = (taskData.status === 'done') ? true : false;
 		setToStorage('tasks', tasks);
 	}
 }
@@ -285,39 +290,57 @@ function hasClass(element, className) {
 	return element.classList.contains(className);
 }
 
+/**
+ * Toggle the visibility of the color selection menu.
+ */
 function toggleColorMenu() {
+	// Get the color menu element and toggle the 'show-menu' class
 	colorsMenu.classList.toggle('show-menu');
 }
 
+/**
+ * Retrieve the name of a color based on its code.
+ * @param {string} color - The code or name of the color.
+ * @returns {string} The name of the color.
+ */
 function getColorName(color) {
-	const colors = {
-		'rgb(187, 134, 252)': 'pink',
-		'rgb(0, 191, 165)': 'teal',
-		'rgb(61, 90, 254)': 'indigo',
-		'rgb(255, 82, 82)': 'red',
-		'rgb(100, 221, 23)': 'green'
-	};
 	return colors[color];
 }
 
-
+/**
+ * Change the website's favicon to match a selected color theme.
+ * @param {string} iconColorName - The name of the color theme.
+ */
 function changeFavIcon(iconColorName) {
+	// Get the favicon element and update its path
 	const favIcon = $.querySelector('#favIcon');
 	const favIconPath = `assets/img/icon/fav-${iconColorName}.png`;
 	favIcon.href = favIconPath;
-
 }
+
+/**
+ * Change the website's logo to match a selected color theme.
+ * @param {string} logoColorName - The name of the color theme.
+ */
 function changeLogo(logoColorName) {
+	// Get the logo element and update its source path
 	const logo = $.querySelector('#logo');
 	const logoPath = `assets/img/logo/logo-${logoColorName}.png`;
 	logo.src = logoPath;
 }
 
+/**
+ * Select a color theme and update the website's appearance.
+ * @param {string} color - The primary color code of the selected theme.
+ */
 function selectThemeColor(color) {
+	// Get the name of the color based on its code
 	const colorName = getColorName(color);
+
+	// Update favicon, logo, and CSS variable for theme color
 	changeFavIcon(colorName);
 	changeLogo(colorName);
-	document.documentElement.style.setProperty('--theme-color', color);
+	$.documentElement.style.setProperty('--theme-color', color);
 }
 
 // Event listeners
@@ -344,6 +367,4 @@ menuCon.addEventListener('click', (event) => {
 		setToStorage('theme-color', colorRgbCode);
 	};
 });
-$.querySelector('nav').addEventListener('click', (event) => {
-	if (hasClass(event.target, 'menuBtn')) toggleMenuContent();
-});
+menuBtn.addEventListener('click', () => toggleMenuContent());

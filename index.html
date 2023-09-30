@@ -4,7 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TaskTales</title>
+    <!-- Link to the CSS file -->
     <link rel="stylesheet" href="assets/css/style.css" />
+    <!-- Link to Font Awesome for icons -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -12,6 +14,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <!-- Link to Favicon file -->
     <link
       id="favIcon"
       rel="shortcut icon"
@@ -23,19 +26,23 @@
     <div class="container">
       <header>
         <nav>
-          <button class="menuBtn">
+          <!-- Navigation menu button -->
+          <div class="menuBtn">
             <div class="bar"></div>
             <div class="bar"></div>
             <div class="bar"></div>
-          </button>
+          </div>
           <div>
-            <a href="">
+            <!-- Logo -->
+            <a href="#">
               <img id="logo" src="assets/img/logo/logo-pink.png" alt="Logo" />
             </a>
           </div>
         </nav>
       </header>
+      <!-- Menu -->
       <div id="menuContainer">
+        <!-- Links Menu -->
         <div class="menuContent">
           <span class="fas fa-history"></span>
           <span class="fas fa-times menuClose"></span>
@@ -47,8 +54,10 @@
           ></span>
           <span class="fa-solid fa-paint-roller"></span>
         </div>
+        <!-- Colors Menu -->
         <div class="colorMenu menuContent">
           <span class="fas fa-times colorMenuClose"></span>
+          <!-- Color options -->
           <span class="colorItem teal"></span>
           <span class="colorItem indigo"></span>
           <span class="colorItem red"></span>
@@ -56,10 +65,12 @@
           <span class="colorItem green"></span>
         </div>
       </div>
+      <!-- Tasks Management -->
       <section id="tasksSection">
         <div id="tasksHeader">
           <h1>Get it done!</h1>
           <form>
+            <!-- Task input field -->
             <input
               id="taskInput"
               type="text"
@@ -67,6 +78,7 @@
               name="todo-input"
               autocomplete="off"
             />
+            <!-- Add Task button -->
             <button class="todoBtn" type="submit">Add Task</button>
           </form>
         </div>
@@ -76,11 +88,13 @@
           </div>
         </div>
       </section>
+      <!-- Task Edit Modal -->
       <div class="modal" id="taskEditModal">
         <div class="modalContent">
           <span class="closeButton">&times;</span>
           <h2>Edit Task</h2>
           <form>
+            <!-- Hidden input for task ID -->
             <input type="hidden" class="taskId" name="task-id" />
             <label for="taskTitle">Title:</label>
             <input type="text" id="taskTitle" name="taskTitle" />
@@ -91,6 +105,7 @@
               <option value="not-done">Not Done</option>
               <option value="done">Done</option>
             </select>
+            <!-- Save button -->
             <button class="btn saveModal">Save</button>
           </form>
         </div>
@@ -99,9 +114,11 @@
     <footer>
       <div>
         Created by
+        <!-- Link to the creator's GitHub profile -->
         <a href="https://github.com/AmiRM4A">Amir</a>
       </div>
     </footer>
+    <!-- Link to JavaScript file -->
     <script src="assets/js/script.js"></script>
   </body>
 </html>
