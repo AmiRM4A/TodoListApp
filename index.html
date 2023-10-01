@@ -25,46 +25,51 @@
   <body>
     <div class="container">
       <header>
-        <nav>
-          <!-- Navigation menu button -->
-          <div class="menuBtn">
-            <div class="bar"></div>
-            <div class="bar"></div>
-            <div class="bar"></div>
+        <div>
+          <nav>
+            <!-- Navigation menu button -->
+            <div class="menuBtn">
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+            </div>
+            <div>
+              <span id="siteName">TaskTales</span>
+            </div>
+            <div>
+              <!-- Logo -->
+              <a href="#">
+                <img id="logo" src="assets/img/logo/logo-pink.png" alt="Logo" />
+              </a>
+            </div>
+          </nav>
+          <!-- Menu -->
+          <div id="menuContainer">
+            <!-- Links Menu -->
+            <div class="menuContent">
+              <span class="fas fa-history"></span>
+              <span class="fas fa-times menuClose"></span>
+              <span
+                ><a
+                  href="https://github.com/AmiRM4A"
+                  class="fa-brands fa-github"
+                ></a
+              ></span>
+              <span class="fa-solid fa-paint-roller"></span>
+            </div>
+            <!-- Colors Menu -->
+            <div class="colorMenu menuContent">
+              <span class="fas fa-times colorMenuClose"></span>
+              <!-- Color options -->
+              <span class="colorItem teal"></span>
+              <span class="colorItem indigo"></span>
+              <span class="colorItem red"></span>
+              <span class="colorItem pink"></span>
+              <span class="colorItem green"></span>
+            </div>
           </div>
-          <div>
-            <!-- Logo -->
-            <a href="#">
-              <img id="logo" src="assets/img/logo/logo-pink.png" alt="Logo" />
-            </a>
-          </div>
-        </nav>
+        </div>
       </header>
-      <!-- Menu -->
-      <div id="menuContainer">
-        <!-- Links Menu -->
-        <div class="menuContent">
-          <span class="fas fa-history"></span>
-          <span class="fas fa-times menuClose"></span>
-          <span
-            ><a
-              href="https://github.com/AmiRM4A"
-              class="fa-brands fa-github"
-            ></a
-          ></span>
-          <span class="fa-solid fa-paint-roller"></span>
-        </div>
-        <!-- Colors Menu -->
-        <div class="colorMenu menuContent">
-          <span class="fas fa-times colorMenuClose"></span>
-          <!-- Color options -->
-          <span class="colorItem teal"></span>
-          <span class="colorItem indigo"></span>
-          <span class="colorItem red"></span>
-          <span class="colorItem pink"></span>
-          <span class="colorItem green"></span>
-        </div>
-      </div>
       <!-- Tasks Management -->
       <section id="tasksSection">
         <div id="tasksHeader">
@@ -94,7 +99,7 @@
       <!-- Task Edit Modal -->
       <div class="modal" id="taskEditModal">
         <div class="modalContent">
-          <span class="closeButton">&times;</span>
+          <span class="closeButton fas fa-times"></span>
           <h2>Edit Task</h2>
           <form>
             <!-- Hidden input for task ID -->
@@ -116,7 +121,7 @@
     </div>
     <footer>
       <div>
-        Created by
+        Created with <i class="fa-solid fa-heart"></i> by
         <!-- Link to the creator's GitHub profile -->
         <a href="https://github.com/AmiRM4A">Amir</a>
       </div>

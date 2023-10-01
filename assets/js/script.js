@@ -368,6 +368,14 @@ function selectThemeColor(color) {
 
 // Event listeners
 window.addEventListener('load', initialize);
+window.addEventListener('scroll', () => {
+	const header = $.querySelector('header');
+	if (window.scrollY > 50) {
+		header.classList.add('sticky');
+		return;
+	}
+	header.classList.remove('sticky');
+});
 tasksSection.addEventListener('click', (event) => {
 	event.preventDefault();
 	const taskElem = event.target.parentElement.parentElement;

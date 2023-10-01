@@ -1,3 +1,18 @@
+@font-face {
+	font-family: 'PlayfairDisplay-Italic';
+	src: url('../fonts/PlayfairDisplay-Italic.ttf');
+}
+
+@font-face {
+	font-family: 'Roberto-Regular';
+	src: url('../fonts/Roboto-Regular.ttf');
+}
+
+html {
+	font-size: 16px;
+	/* Set a base font size */
+}
+
 /* Reset default margin, padding, and box-sizing for all elements */
 * {
 	margin: 0;
@@ -23,7 +38,8 @@ a {
 /* General styles for the body */
 body {
 	background: #121212;
-	font-family: 'Work Sans', sans-serif;
+	font-family: 'Roberto-Regular', sans-serif;
+	font-size: 1rem;
 }
 
 /* Styles for the container */
@@ -46,11 +62,12 @@ nav {
 	display: flex;
 	justify-content: space-between;
 	padding: 1em 1.5em 0;
+	align-items: center;
 }
 
 /* Styles for the form within #tasksSection */
 #tasksSection form {
-	margin: 2rem;
+	margin: 1.5rem 0 2rem;
 	min-height: 10vh;
 	width: 100%;
 	display: flex;
@@ -70,9 +87,6 @@ nav {
 	max-width: 500px;
 	width: 100%;
 	background: rgb(255 255 255 / 5%);
-	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-	backdrop-filter: blur(5px);
-	-webkit-backdrop-filter: blur(5px);
 	border: 1px solid rgb(255 255 255 / 15%);
 }
 
@@ -90,11 +104,37 @@ nav {
 #tasksSection button {
 	border-radius: unset;
 	background: var(--theme-color);
-	padding: 10px;
+	padding: 11px;
 	font-size: 17px;
 	border-top-right-radius: 15px;
 	border-bottom-right-radius: 15px;
 	min-width: 100px;
+}
+
+#siteName {
+	display: none;
+}
+
+.sticky {
+	position: sticky;
+	top: 0;
+	z-index: 999;
+	background: rgb(139 139 139 / 4%);
+	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+}
+
+.sticky nav {
+	padding: 0.75em 1em;
+}
+
+.sticky #siteName {
+	font-family: 'PlayfairDisplay-Italic';
+	display: inline-block;
+	font-size: 2.25rem;
+	font-weight: 900;
+	text-shadow: 0.5px 0.5px 5px var(--theme-color);
 }
 
 /* Header styles for tasks section */
@@ -102,16 +142,15 @@ nav {
 	align-items: center;
 	display: flex;
 	flex-direction: column;
-	font-size: 1.5rem;
 }
 
 /* Heading styles within tasks section */
 #tasksSection h1 {
+	font-size: 2.5rem;
 	text-align: center;
 	color: #fff;
 	letter-spacing: 0.20rem;
 	margin-top: 50px;
-	/* margin-bottom: 20px; */
 	max-width: 480px;
 	white-space: nowrap;
 	overflow: hidden;
@@ -166,6 +205,7 @@ nav {
 	margin: 0 15px 30px;
 	overflow: hidden;
 	border-radius: 28px;
+	transition: all 0.3s ease;
 }
 
 /* Styles for task item on hover */
@@ -200,7 +240,8 @@ nav {
 }
 
 /* Hover styles for the delete icon */
-.task .fa-times:hover {
+.fa-times:hover,
+#taskEditModal {
 	color: var(--theme-color);
 }
 
@@ -220,18 +261,21 @@ nav {
 	min-height: 100px;
 	margin: 0 0 25px;
 	overflow: hidden;
-	font-weight: bold;
-	font-size: 30px;
 	color: #FFF;
 	z-index: 2;
 	position: relative;
 }
 
+/* Styles for task title */
+.task-title {
+	font-weight: bold;
+	font-size: 1.5rem;
+}
+
 /* Styles for task description */
 .task-desc {
 	margin-top: 5px;
-	font-size: 16px;
-	font-weight: 500;
+	font-size: 1rem;
 }
 
 /* Styles for the modal for editing tasks */
@@ -250,12 +294,12 @@ nav {
 /* Styles for the modal content within the edit task modal */
 #taskEditModal .modalContent {
 	background-color: #121212;
-	width: 55%;
+	width: 70%;
 	margin: 0 auto;
 	margin-top: 100px;
 	border-radius: 15px;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	padding: 20px;
+	padding: 30px;
 	position: relative;
 	display: flex;
 	color: #ffffff;
@@ -265,8 +309,8 @@ nav {
 /* Styles for the close button of the modal */
 #taskEditModal .closeButton {
 	position: absolute;
-	top: 10px;
-	right: 10px;
+	top: 15px;
+	right: 15px;
 	cursor: pointer;
 	font-size: 24px;
 }
@@ -437,7 +481,32 @@ nav {
 .menuContent span:hover,
 a:hover {
 	opacity: 0.7;
+	transition: all 0.3 ease;
 }
+
+@keyframes fadeOut {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+span,
+button,
+a,
+.menuBtn,
+nav {
+	transition: all 0.35s ease;
+}
+
+.task,
+#taskEditModal {
+	animation: fadeOut 0.3s ease forwards;
+}
+
 
 /* Footer styles */
 footer {
@@ -453,8 +522,20 @@ footer a {
 	color: var(--theme-color);
 }
 
+footer .fa-heart {
+	color: var(--theme-color);
+}
+
 /* Media query for screens smaller than 768px (typical mobile screens) */
 @media screen and (max-width: 768px) {
+	#tasksSection h1 {
+		font-size: 2.25rem;
+	}
+
+	#tasksSection form {
+		margin-top: 1rem;
+		width: 90%;
+	}
 
 	/* Set cards to full width */
 	.task {
