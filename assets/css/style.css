@@ -537,6 +537,10 @@ footer .fa-heart {
 		width: 90%;
 	}
 
+	.sticky #siteName {
+		font-size: 1.75rem;
+	}
+
 	/* Set cards to full width */
 	.task {
 		flex-basis: 100%;
