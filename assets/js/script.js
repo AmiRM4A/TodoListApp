@@ -15,6 +15,10 @@ const colors = {
 	'rgb(255, 82, 82)': 'red',
 	'rgb(100, 221, 23)': 'green'
 };
+const textToType = "Get it done!";
+const h1Elem = $.querySelector('#tasksHeader h1');
+const caret = $.querySelector('.blink-caret');
+
 
 // Initialize tasks array
 let tasks;
@@ -63,11 +67,30 @@ function loadStorageTasks(taskArray) {
 	tasks.forEach(task => addTask(task));
 }
 
+/**
+ * Type the header text with the animation
+ */
+function typeText() {
+	let i = 0;
+	function typeNextCharacter() {
+		if (i < textToType.length) {
+			h1Elem.textContent += textToType.charAt(i);
+			i++;
+			setTimeout(typeNextCharacter, 100);
+		} else {
+			setInterval(() => {
+				caret.style.display = 'none';
+			}, 3200);
+		}
+	}
+	typeNextCharacter();
+}
 
 /**
  * Initializes data from local storage
  */
 function initialize() {
+	typeText();
 	const colorRgbCode = getFromStorage('theme-color', true);
 	if (colorRgbCode !== null) {
 		selectThemeColor(colorRgbCode);

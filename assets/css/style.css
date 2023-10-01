@@ -50,7 +50,7 @@ nav {
 
 /* Styles for the form within #tasksSection */
 #tasksSection form {
-	margin: 1rem;
+	margin: 2rem;
 	min-height: 10vh;
 	width: 100%;
 	display: flex;
@@ -111,8 +111,30 @@ nav {
 	color: #fff;
 	letter-spacing: 0.20rem;
 	margin-top: 50px;
-	margin-bottom: 20px;
+	/* margin-bottom: 20px; */
 	max-width: 480px;
+	white-space: nowrap;
+	overflow: hidden;
+	display: inline-block;
+}
+
+/* Styles of blinking vertical line*/
+.blink-caret {
+	animation: blink-caret 0.75s step-end infinite;
+	border-right: 1.1px solid #ffffff;
+	padding-top: 0.85em;
+}
+
+@keyframes blink-caret {
+
+	from,
+	to {
+		border-color: transparent;
+	}
+
+	50% {
+		border-color: #ffffff;
+	}
 }
 
 /* Styles for tasks container */
