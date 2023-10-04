@@ -160,8 +160,8 @@ nav {
 /* Styles of blinking vertical line*/
 .blink-caret {
 	animation: blink-caret 0.75s step-end infinite;
-	border-right: 1.1px solid #ffffff;
-	padding-top: 0.85em;
+	border-right: 1px solid #ffffff;
+	padding-top: 2em;
 }
 
 @keyframes blink-caret {
@@ -497,31 +497,8 @@ button,
 	cursor: pointer;
 }
 
-/* @keyframes fadeOut {
-	0% {
-		opacity: 0;
-	}
-
-	100% {
-		opacity: 1;
-	}
-} */
-
-/* span,
-button,
-a,
-.menuBtn,
-nav {
-	transition: all 0.35s ease;
-} */
-
-/* .task,
-#taskEditModal {
-	animation: fadeOut 0.3s ease forwards;
-} */
 
 /* Completed tasks modal styles */
-
 #completedTasksModal .close {
 	position: absolute;
 	top: 10px;
@@ -640,9 +617,8 @@ footer .fa-heart {
 	}
 }
 
-
 .showModal {
-	display: block;
+	display: block !important;
 }
 
 /* Media query for screens larger than 1024px (desktop screens) */

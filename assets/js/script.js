@@ -1,8 +1,8 @@
-// DOM elements
+/* DOM elements */
 const $ = document;
-const taskNameInput = $.getElementById('taskInput');
+const taskInput = $.getElementById('taskInput');
 const tasksCon = $.querySelector('.todo');
-const menuCon = $.getElementById('menuContainer');
+const menuContainer = $.getElementById('menuContainer');
 const menuContent = $.querySelector('.menuContent');
 const menuBtn = $.querySelector(".menuBtn");
 const taskEditModal = $.getElementById('taskEditModal');
@@ -16,15 +16,16 @@ const colors = {
 	'rgb(100, 221, 23)': 'green'
 };
 const textToType = "Get it done!";
+const TYPE_DELAY = 100;
 const h1Elem = $.querySelector('#tasksHeader h1');
 const caret = $.querySelector('.blink-caret');
 const completedTasksModal = $.getElementById('completedTasksModal');
 const completedTasksTable = completedTasksModal.querySelector('table tbody');
 
-// Initialize tasks array
+/* Initialize tasks array */
 let tasks;
 
-// --- Helper functions --- //
+/* --- Helper functions --- */
 
 /**
  * Retrieves the last ID among the tasks.
@@ -75,15 +76,11 @@ function loadStorageTasks(taskArray) {
  */
 function typeText() {
 	let i = 0;
-	function typeNextCharacter() {
+	const typeNextCharacter = () => {
 		if (i < textToType.length) {
 			h1Elem.textContent += textToType.charAt(i);
 			i++;
-			setTimeout(typeNextCharacter, 100);
-		} else {
-			setInterval(() => {
-				caret.style.display = 'none';
-			}, 3200);
+			setTimeout(typeNextCharacter, TYPE_DELAY);
 		}
 	}
 	typeNextCharacter();
@@ -159,7 +156,7 @@ function createTaskElem(taskId, taskName, taskDesc, taskCreationDate) {
  * Resets the input field.
  */
 function resetInput() {
-	taskNameInput.value = '';
+	taskInput.value = '';
 }
 
 /**
@@ -271,22 +268,11 @@ function addTask(taskData) {
 }
 
 /**
- * Handles adding a task when the "Add" button is clicked.
- */
-function handleAddTaskBtnClick() {
-	const taskName = taskNameInput.value;
-	if (!taskName) return;
-	addTask(taskName);
-}
-
-/**
  * Shows or hides a modal element.
  * @param {Element} modalElem - The modal element to be shown or hidden.
  */
 function toggleModal(modalElem) {
-	const modalDisplay = getComputedStyle(modalElem).display;
-	if (!modalDisplay) return;
-	modalElem.style.display = (modalDisplay === 'none') ? 'block' : 'none';
+	modalElem.classList.toggle('showModal');
 }
 
 /**
@@ -304,20 +290,10 @@ function fillModalInput(taskElem) {
 	const modalId = taskEditModal.querySelector('.taskId');
 	const modalTitle = taskEditModal.querySelector('#taskTitle');
 	const modalDesc = taskEditModal.querySelector('#taskDescription');
-	// const modalStatus = taskEditModal.querySelector('#taskStatus');
-	const taskId = getTaskId(taskElem);
+	const taskId = getTaskId(taskElem.parentElement);
 	modalId.value = taskId;
 	modalTitle.value = taskElem.querySelector('.task-title').textContent;
 	modalDesc.value = taskElem.querySelector('.task-desc').textContent;
-}
-
-/**
- * Handles editing a task when the edit icon is clicked.
- * @param {Element} taskElem - The task element to be edited.
- */
-function editTaskHandler(taskElem) {
-	fillModalInput(taskElem);
-	toggleEditModal();
 }
 
 /**
@@ -375,7 +351,7 @@ function handleSaveModalBtnClick() {
 	}
 	updateTaskInStorage(data);
 	updateTaskInDom(data);
-	toggleEditModal();
+	toggleModal(taskEditModal);
 }
 
 /**
@@ -405,10 +381,8 @@ function hasClass(element, className) {
  * This function toggles the visibility of the color selection menu by adding or removing the "show-menu" class to the `colorsMenu` element.
  */
 function toggleColorMenu() {
-	// Get the color menu element and toggle the 'show-menu' class
 	colorsMenu.classList.toggle('show-menu');
 }
-
 
 /**
  * Retrieve the name of a color based on its code.
@@ -423,13 +397,11 @@ function getColorName(color) {
 	return colors[color];
 }
 
-
 /**
  * Change the website's favicon to match a selected color theme.
  * @param {string} iconColorName - The name of the color theme.
  */
 function changeFavIcon(iconColorName) {
-	// Get the favicon element and update its path
 	const favIcon = $.querySelector('#favIcon');
 	const favIconPath = `assets/img/icon/fav-${iconColorName}.png`;
 	favIcon.href = favIconPath;
@@ -440,7 +412,6 @@ function changeFavIcon(iconColorName) {
  * @param {string} logoColorName - The name of the color theme.
  */
 function changeLogo(logoColorName) {
-	// Get the logo element and update its source path
 	const logo = $.querySelector('#logo');
 	const logoPath = `assets/img/logo/logo-${logoColorName}.png`;
 	logo.src = logoPath;
@@ -451,10 +422,7 @@ function changeLogo(logoColorName) {
  * @param {string} color - The primary color code of the selected theme.
  */
 function selectThemeColor(color) {
-	// Get the name of the color based on its code
 	const colorName = getColorName(color);
-
-	// Update favicon, logo, and CSS variable for theme color
 	changeFavIcon(colorName);
 	changeLogo(colorName);
 	$.documentElement.style.setProperty('--theme-color', color);
@@ -499,7 +467,7 @@ function undoCompletedTask(completedTaskElem) {
 	completedTaskElem.remove();
 }
 
-// Event listeners
+/* Event listeners */
 window.addEventListener('load', initialize);
 window.addEventListener('scroll', () => {
 	const header = $.querySelector('header');
@@ -512,16 +480,22 @@ window.addEventListener('scroll', () => {
 tasksSection.addEventListener('click', (event) => {
 	event.preventDefault();
 	const taskElem = event.target.parentElement.parentElement;
-	if (hasClass(event.target, 'addTodoBtn')) handleAddTaskBtnClick();
+	if (hasClass(event.target, 'addTodoBtn')) {
+		const taskName = taskInput.value;
+		if (taskName) addTask(taskName);
+	}
 	else if (hasClass(event.target, 'fa-times')) removeTask(taskElem);
-	else if (hasClass(event.target, 'fa-edit')) editTaskHandler(taskElem);
+	else if (hasClass(event.target, 'fa-edit')) {
+		fillModalInput(taskElem);
+		toggleModal(taskEditModal);
+	};
 });
 taskEditModal.addEventListener('click', (event) => {
 	event.preventDefault();
-	if (hasClass(event.target, 'closeButton')) toggleEditModal();
+	if (hasClass(event.target, 'closeButton')) toggleModal(taskEditModal);
 	else if (hasClass(event.target, 'saveModal')) handleSaveModalBtnClick();
 });
-menuCon.addEventListener('click', (event) => {
+menuContainer.addEventListener('click', (event) => {
 	const target = event.target;
 	if (hasClass(target, 'menuClose')) toggleMenuContent();
 	else if (hasClass(target, 'fa-paint-roller') || hasClass(target, 'colorMenuClose')) toggleColorMenu();
