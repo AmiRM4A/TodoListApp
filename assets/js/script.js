@@ -18,7 +18,8 @@ const colors = {
 const textToType = "Get it done!";
 const h1Elem = $.querySelector('#tasksHeader h1');
 const caret = $.querySelector('.blink-caret');
-
+const completedTasksModal = $.getElementById('completedTasksModal');
+const completedTasksTable = completedTasksModal.querySelector('table tbody');
 
 // Initialize tasks array
 let tasks;
@@ -64,7 +65,9 @@ function getFromStorage(key, json = true) {
  */
 function loadStorageTasks(taskArray) {
 	tasks = taskArray;
-	tasks.forEach(task => addTask(task));
+	tasks.forEach(task => {
+		task.status ? markTaskAsCompleted(task, true) : addTask(task);
+	});
 }
 
 /**
@@ -103,6 +106,10 @@ function initialize() {
 	tasks = [];
 }
 
+function getStorageTaskIndex(id) {
+	return tasks.findIndex(task => task.id === Number(id));
+}
+
 /**
  * Gets the current date in the format MM/DD/YYYY.
  * @returns {string} - The current date.
@@ -130,8 +137,11 @@ function createTaskElem(taskId, taskName, taskDesc, taskCreationDate) {
 	return `
         <div class="task animate__bounceIn" data-task-id=${taskId}>
           <div>
-            <span class="fas fa-edit"></span>
-            <span class="fas fa-times"></span>
+			<div class="task-actions">
+				<span class="fas fa-edit"></span>
+            	<span class="fa fa-check done-span"></span>
+				<span class="fas fa-times"></span>
+			</div>
             <div class="task-info">
               <div class="task-title">${taskName}</div>
               <div class="task-desc">${taskDesc}</div>
@@ -140,6 +150,7 @@ function createTaskElem(taskId, taskName, taskDesc, taskCreationDate) {
             Created:
             <span style="color: var(--theme-color);"> ${taskCreationDate} </span>
           </div>
+				<button class="fa fa-check done-btn" aria-hidden="true"></button>
         </div>
 	`;
 }
@@ -175,10 +186,72 @@ function getTaskId(taskElem) {
  */
 function removeTask(taskElem) {
 	const taskElemId = getTaskId(taskElem);
-	const index = tasks.findIndex(taskObj => taskObj.id === taskElemId);
+	const index = getStorageTaskIndex(taskElemId);
 	tasks.splice(index, 1);
 	setToStorage('tasks', tasks);
-	taskElem.remove();
+	taskElem.parentElement.remove();
+}
+
+/**
+ * Creates an HTML table row element to represent a completed task.
+ * @param {string} taskId - The unique identifier for the task.
+ * @param {string} taskTitle - The title or name of the task.
+ * @param {string} taskDesc - The description of the task.
+ * @param {string} createdAt - The date when the task was created.
+ * @param {string} completedAt - The date when the task was completed.
+ * @returns {string} - A string containing the HTML markup for the completed task row.
+ */
+function createCompletedTaskElem(taskId, taskTitle, taskDesc, createdAt, completedAt) {
+	return `
+    <tr data-task-id="${taskId}">
+        <td class="taskId">${taskId}</td>
+        <td class="taskTitle">${taskTitle}</td>
+        <td class="taskDesc">${taskDesc}</td>
+        <td class="taskCreationDate">${createdAt}</td>
+        <td class="taskCompletionDate">${completedAt}</td>
+        <td class="taskActions">
+            <i class="fas fa-trash"></i>
+            <i class="fas fa-undo"></i>
+        </td>
+    </tr>
+    `;
+}
+
+/**
+ * Marks a task as completed and updates the task list. Optionally adds it to the completed tasks table.
+ * @param {object} taskData - An object containing task details, including id, name, description, createdAt, and completedAt.
+ * @param {boolean} storageTask - Indicates whether the task is stored in local storage. Default is false.
+ */
+function markTaskAsCompleted(taskData, storageTask = false) {
+	const index = getStorageTaskIndex(taskData.id);
+	const taskElem = createCompletedTaskElem(
+		taskData.id,
+		taskData.name,
+		taskData.desc,
+		taskData.createdAt,
+		taskData.completedAt || getCurrentDate()
+	);
+	if (!storageTask) {
+		tasks[index].status = true;
+		tasks[index].completedAt = getCurrentDate();
+		setToStorage('tasks', tasks);
+	}
+	completedTasksTable.insertAdjacentHTML('beforeend', taskElem);
+}
+
+/**
+ * Sets an event listener on a task element to handle marking a task as completed when a user interacts with it.
+ * @param {object} taskData - An object containing task details, including id, name, description, createdAt, and completedAt.
+ */
+function setCompleteTaskEvent(taskData) {
+	const taskElem = selectTask(taskData.id);
+	if (taskElem === null) return;
+	taskElem.addEventListener('click', (event) => {
+		if (event.target.classList.contains('fa-check')) {
+			markTaskAsCompleted(taskData);
+			taskElem.remove();
+		}
+	});
 }
 
 /**
@@ -193,6 +266,7 @@ function addTask(taskData) {
 	}
 	const taskElem = createTaskElem(taskData.id, taskData.name, taskData.desc, taskData.createdAt);
 	tasksCon.insertAdjacentHTML('beforeend', taskElem);
+	setCompleteTaskEvent(taskData);
 	resetInput();
 }
 
@@ -248,18 +322,26 @@ function editTaskHandler(taskElem) {
 
 /**
  * Toggles the menu by adding or removing CSS classes.
+ *
+ * @function
+ * @name toggleMenuContent
+ *
+ * @description
+ * This function toggles the visibility of the menu by adding or removing CSS classes.
+ * It toggles the "menu-open" class on the menu button and the "show-menu" class on the menu content.
  */
 function toggleMenuContent() {
 	menuBtn.classList.toggle("menu-open");
 	menuContent.classList.toggle('show-menu');
 }
 
+
 /**
  * Updates task data in storage based on the provided task data.
  * @param {object} taskData - The updated task data.
  */
 function updateTaskInStorage(taskData) {
-	const index = tasks.findIndex(task => Number(task.id) === Number(taskData.id));
+	const index = getStorageTaskIndex(taskData.id);
 	if (index !== -1) {
 		tasks[index].name = taskData.name;
 		tasks[index].desc = taskData.desc;
@@ -315,20 +397,32 @@ function hasClass(element, className) {
 
 /**
  * Toggle the visibility of the color selection menu.
+ *
+ * @function
+ * @name toggleColorMenu
+ *
+ * @description
+ * This function toggles the visibility of the color selection menu by adding or removing the "show-menu" class to the `colorsMenu` element.
  */
 function toggleColorMenu() {
 	// Get the color menu element and toggle the 'show-menu' class
 	colorsMenu.classList.toggle('show-menu');
 }
 
+
 /**
  * Retrieve the name of a color based on its code.
+ *
+ * @function
+ * @name getColorName
+ *
  * @param {string} color - The code or name of the color.
  * @returns {string} The name of the color.
  */
 function getColorName(color) {
 	return colors[color];
 }
+
 
 /**
  * Change the website's favicon to match a selected color theme.
@@ -366,6 +460,45 @@ function selectThemeColor(color) {
 	$.documentElement.style.setProperty('--theme-color', color);
 }
 
+/**
+ * Removes a completed task from the tasks array and updates local storage.
+ *
+ * @function
+ * @name removeCompletedTask
+ *
+ * @param {Element} completedTaskElem - The completed task element to be removed.
+ *
+ * @description
+ * This function takes a completed task element as input, removes the task from the `tasks` array, updates the local storage, and removes the task element from the DOM.
+ */
+function removeCompletedTask(completedTaskElem) {
+	const index = getStorageTaskIndex(completedTaskElem.dataset.taskId);
+	tasks.splice(index, 1);
+	setToStorage('tasks', tasks);
+	completedTaskElem.remove();
+}
+
+/**
+ * Undoes a completed task and moves it back to the active tasks list.
+ *
+ * @function
+ * @name undoCompletedTask
+ *
+ * @param {Element} completedTaskElem - The completed task element to be undone.
+ *
+ * @description
+ * This function takes a completed task element as input, updates the task's status and completion timestamp in the `tasks` array, updates the local storage, adds the task back to the active tasks list in the DOM, and removes the completed task element from the DOM.
+ */
+function undoCompletedTask(completedTaskElem) {
+	const index = getStorageTaskIndex(completedTaskElem.dataset.taskId);
+	const taskData = tasks.find(task => task.id === Number(completedTaskElem.dataset.taskId));
+	tasks[index].status = false;
+	delete tasks[index].completedAt;
+	setToStorage('tasks', tasks);
+	addTask(taskData);
+	completedTaskElem.remove();
+}
+
 // Event listeners
 window.addEventListener('load', initialize);
 window.addEventListener('scroll', () => {
@@ -379,7 +512,7 @@ window.addEventListener('scroll', () => {
 tasksSection.addEventListener('click', (event) => {
 	event.preventDefault();
 	const taskElem = event.target.parentElement.parentElement;
-	if (hasClass(event.target, 'todoBtn')) handleAddTaskBtnClick();
+	if (hasClass(event.target, 'addTodoBtn')) handleAddTaskBtnClick();
 	else if (hasClass(event.target, 'fa-times')) removeTask(taskElem);
 	else if (hasClass(event.target, 'fa-edit')) editTaskHandler(taskElem);
 });
@@ -396,6 +529,13 @@ menuCon.addEventListener('click', (event) => {
 		const colorRgbCode = getComputedStyle(target)['background-color'];
 		selectThemeColor(colorRgbCode);
 		setToStorage('theme-color', colorRgbCode);
-	};
+	}
+	else if (hasClass(target, 'fa-history')) completedTasksModal.classList.add('showModal');
 });
+completedTasksModal.addEventListener('click', (event) => {
+	const target = event.target;
+	if (hasClass(target, 'fa-times')) completedTasksModal.classList.remove('showModal');
+	else if (hasClass(target, 'fa-trash')) removeCompletedTask(target.parentElement.parentElement);
+	else if (hasClass(target, 'fa-undo')) undoCompletedTask(target.parentElement.parentElement);
+})
 menuBtn.addEventListener('click', () => toggleMenuContent());

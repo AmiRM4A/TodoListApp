@@ -92,7 +92,7 @@
               autocomplete="off"
             />
             <!-- Add Task button -->
-            <button class="todoBtn" type="submit">Add Task</button>
+            <button class="addTodoBtn" type="submit">Add Task</button>
           </form>
         </div>
         <div id="tasksContainer">
@@ -121,6 +121,27 @@
             <!-- Save button -->
             <button class="btn saveModal">Save</button>
           </form>
+        </div>
+      </div>
+      <!-- Completed tasks modal -->
+      <div class="modal" id="completedTasksModal">
+        <div class="modalContent">
+          <span class="close fas fa-times"></span>
+          <table>
+            <thead>
+              <tr>
+                <th class="taskId">ID</th>
+                <th class="taskTitle">Title</th>
+                <th class="taskDesc">Description</th>
+                <th class="taskCreationDate">Created At</th>
+                <th class="taskCompletionDate">Completed At</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Completed tasks will be shown here -->
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
