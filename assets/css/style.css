@@ -101,7 +101,7 @@ nav {
 }
 
 /* Button for adding tasks */
-#tasksSection button {
+#tasksSection .addTodoBtn {
 	border-radius: unset;
 	background: var(--theme-color);
 	padding: 11px;
@@ -131,10 +131,11 @@ nav {
 
 .sticky #siteName {
 	font-family: 'PlayfairDisplay-Italic';
-	display: inline-block;
+	display: none;
 	font-size: 2.25rem;
+	color: #ffffff78;
 	font-weight: 900;
-	text-shadow: 0.5px 0.5px 5px var(--theme-color);
+	text-shadow: 0.5px 0.5px 6px var(--theme-color);
 }
 
 /* Header styles for tasks section */
@@ -205,7 +206,7 @@ nav {
 	margin: 0 15px 30px;
 	overflow: hidden;
 	border-radius: 28px;
-	transition: all 0.3s ease;
+	transition: all 0.3 ease;
 }
 
 /* Styles for task item on hover */
@@ -216,7 +217,7 @@ nav {
 /* Styles for links within task items */
 .task>div {
 	display: block;
-	padding: 45px 20px;
+	padding: 0px 20px 50px;
 	background-color: #000000;
 	text-decoration: none;
 	color: white;
@@ -225,34 +226,41 @@ nav {
 	cursor: pointer;
 }
 
-/* Styles for icons within task items */
-.task .fa-times,
-.task .fa-edit {
-	position: absolute;
-	font-size: 18px;
-	padding: 7px;
+.task .task-actions {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	flex-direction: row;
+	padding: 27px 5px 15px;
 }
 
-/* Positioning for the delete icon */
-.task .fa-times {
-	right: 5%;
-	top: 7%;
+.task .done-span,
+.task .done-btn {
+	display: none;
+}
+
+.task .done-btn {
+	background-color: var(--theme-color);
+	color: #ffffff;
+	width: 100%;
+	padding: 12px 15px 12px;
+	text-align: center;
+	border-radius: unset;
+}
+
+/* Styles for icons within task items */
+.task .fa-times,
+.task .fa-edit,
+.task .done-span {
+	font-size: 18px;
+	padding: 7px 0px 7px 10px;
 }
 
 /* Hover styles for the delete icon */
 .fa-times:hover,
+.fa-edit:hover,
+.done-span:hover,
 #taskEditModal {
-	color: var(--theme-color);
-}
-
-/* Positioning for the edit icon */
-.task .fa-edit {
-	right: 10%;
-	top: 7%;
-}
-
-/* Hover styles for the edit icon */
-.task .fa-edit:hover {
 	color: var(--theme-color);
 }
 
@@ -292,7 +300,7 @@ nav {
 }
 
 /* Styles for the modal content within the edit task modal */
-#taskEditModal .modalContent {
+.modalContent {
 	background-color: #121212;
 	width: 70%;
 	margin: 0 auto;
@@ -479,12 +487,25 @@ nav {
 #tasksSection button:hover,
 .menuBtn:hover,
 .menuContent span:hover,
-a:hover {
+a:hover,
+.done-btn:hover,
+.done-span:hover {
 	opacity: 0.7;
 	transition: all 0.3 ease;
 }
 
-@keyframes fadeOut {
+.menuBtn,
+.menuContent span,
+btn,
+button,
+.fa-edit,
+.fa-times,
+.fa-check,
+#taskStatus {
+	cursor: pointer;
+}
+
+/* @keyframes fadeOut {
 	0% {
 		opacity: 0;
 	}
@@ -492,19 +513,55 @@ a:hover {
 	100% {
 		opacity: 1;
 	}
-}
+} */
 
-span,
+/* span,
 button,
 a,
 .menuBtn,
 nav {
 	transition: all 0.35s ease;
-}
+} */
 
-.task,
+/* .task,
 #taskEditModal {
 	animation: fadeOut 0.3s ease forwards;
+} */
+
+/* Completed tasks modal styles */
+
+#completedTasksModal .close {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	font-size: 20px;
+	cursor: pointer;
+}
+
+/* Make the table responsive */
+#completedTasksModal table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+#completedTasksModal th,
+#completedTasksModal td {
+	text-align: center;
+	padding: 8px;
+}
+
+/* FontAwesome Icons */
+#completedTasksModal i {
+	font-size: 18px;
+	margin-right: 7px;
+	cursor: pointer;
+}
+
+#completedTasksModal .taskActions {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	justify-content: space-evenly;
 }
 
 
@@ -526,6 +583,8 @@ footer .fa-heart {
 	color: var(--theme-color);
 }
 
+
+
 /* Media query for screens smaller than 768px (typical mobile screens) */
 @media screen and (max-width: 768px) {
 	#tasksSection h1 {
@@ -546,6 +605,21 @@ footer .fa-heart {
 		flex-basis: 100%;
 		margin: 0 15px 30px;
 	}
+
+	.task .done-span {
+		display: inline-block;
+	}
+
+	#completedTasksModal .taskId,
+	#completedTasksModal .taskCreationDate,
+	#completedTasksModal .taskCompletionDate {
+		display: none;
+	}
+
+	#completedTasksModal .modalContent {
+		width: 75%;
+		padding: 30px 25px;
+	}
 }
 
 /* Media query for screens between 768px and 1024px (tablets) */
@@ -556,6 +630,27 @@ footer .fa-heart {
 		flex-basis: calc(50% - 30px);
 		margin: 0 15px 30px;
 	}
+
+	#completedTasksModal .taskCreationDate {
+		display: none;
+	}
+}
+
+@media screen and (min-width: 768px) {
+	.task .done-btn {
+		display: block;
+		position: absolute;
+		bottom: -40px;
+	}
+
+	.task:hover .done-btn {
+		bottom: 0;
+	}
+}
+
+
+.showModal {
+	display: block;
 }
 
 /* Media query for screens larger than 1024px (desktop screens) */
