@@ -128,7 +128,7 @@ function createTaskObj(taskName) {
  */
 function createTaskElem(taskId, taskName, taskDesc, taskCreationDate) {
 	return `
-        <div class="task" data-task-id=${taskId}>
+        <div class="task animate__bounceIn" data-task-id=${taskId}>
           <div>
             <span class="fas fa-edit"></span>
             <span class="fas fa-times"></span>

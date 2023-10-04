@@ -54,7 +54,6 @@ button {
 	outline: none;
 	padding: 10px 20px;
 	border-radius: 5px;
-	cursor: pointer;
 }
 
 /* Header styles */
@@ -219,10 +218,9 @@ nav {
 	padding: 45px 20px;
 	background-color: #000000;
 	text-decoration: none;
-	color: white;
+	color: #ffffff !important;
 	overflow: hidden;
 	position: relative;
-	cursor: pointer;
 }
 
 /* Styles for icons within task items */
@@ -311,7 +309,6 @@ nav {
 	position: absolute;
 	top: 15px;
 	right: 15px;
-	cursor: pointer;
 	font-size: 24px;
 }
 
@@ -359,10 +356,6 @@ nav {
 	transition: all .5s ease;
 }
 
-.menuContent span {
-	cursor: pointer;
-}
-
 /* Styles for menu icons */
 .menuContent .fa-times,
 .menuContent .fa-history,
@@ -400,7 +393,6 @@ nav {
 
 /* Styles for the menu button */
 .menuBtn {
-	cursor: pointer;
 	display: block;
 	background: none;
 	padding: 3px;
