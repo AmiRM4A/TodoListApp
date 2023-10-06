@@ -125,16 +125,16 @@ nav {
 }
 
 .sticky nav {
-	padding: 0.75em 1em;
+	padding: 0.25em 1em;
 }
 
 .sticky #siteName {
-	font-family: 'PlayfairDisplay-Italic';
+	font-family: 'PlayfairDisplay-Italic', sans-serif;
 	display: none;
 	font-size: 2.25rem;
 	color: #ffffff78;
 	font-weight: 900;
-	text-shadow: 0.5px 0.5px 6px var(--theme-color);
+	text-shadow: 1px 1px 6px var(--theme-color);
 }
 
 /* Header styles for tasks section */
@@ -198,25 +198,24 @@ nav {
 /* Styles for each task item */
 .task {
 	background: rgb(255 255 255 / 5%);
-	border-radius: 16px;
 	backdrop-filter: blur(5px);
 	-webkit-backdrop-filter: blur(5px);
 	flex-basis: calc(33.33333% - 30px);
 	margin: 0 15px 30px;
 	overflow: hidden;
 	border-radius: 28px;
-	transition: all 0.3 ease;
+	transition: all 0.3s ease;
 }
 
 /* Styles for task item on hover */
 .task:hover {
-	box-shadow: 0 0px 10px 0px var(--theme-color);
+	box-shadow: 0 0 15px -5px var(--theme-color);
 }
 
 /* Styles for links within task items */
 .task>div {
 	display: block;
-	padding: 0px 20px 50px;
+	padding: 0 20px 50px;
 	background-color: #000000;
 	text-decoration: none;
 	color: #ffffff !important;
@@ -251,7 +250,7 @@ nav {
 .task .fa-edit,
 .task .done-span {
 	font-size: 18px;
-	padding: 7px 0px 7px 10px;
+	padding: 7px 0 7px 10px;
 }
 
 /* Hover styles for the delete icon */
@@ -301,8 +300,7 @@ nav {
 .modalContent {
 	background-color: #121212;
 	width: 70%;
-	margin: 0 auto;
-	margin-top: 100px;
+	margin:100px auto 0;
 	border-radius: 15px;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 	padding: 30px;
@@ -476,25 +474,32 @@ nav {
 /* Hover and focus styles for various elements */
 #taskEditModal .saveModal:hover,
 #tasksSection input:focus,
-#tasksSection button:hover,
+button:hover,
 .menuBtn:hover,
 .menuContent span:hover,
 a:hover,
 .done-btn:hover,
-.done-span:hover {
+.done-span:hover,
+.fa-trash:hover,
+.fa-undo:hover,
+.fa-edit:hover,
+.fa-times:hover {
+	cursor: pointer;
 	opacity: 0.7;
-	transition: all 0.3 ease;
 }
 
 .menuBtn,
 .menuContent span,
-btn,
 button,
 .fa-edit,
 .fa-times,
 .fa-check,
-#taskStatus {
-	cursor: pointer;
+#taskStatus,
+.fa-trash,
+.fa-undo,
+nav,
+a {
+	transition: all 0.3s ease;
 }
 
 
@@ -533,7 +538,6 @@ button,
 	justify-content: space-evenly;
 }
 
-
 /* Footer styles */
 footer {
 	text-align: center;
@@ -552,7 +556,15 @@ footer .fa-heart {
 	color: var(--theme-color);
 }
 
+/* Animations */
+a,
+button,
+input {
+	/* transition: all 0.3s ease; */
+}
 
+
+/* Media Queries */
 
 /* Media query for screens smaller than 768px (typical mobile screens) */
 @media screen and (max-width: 768px) {
@@ -623,8 +635,6 @@ footer .fa-heart {
 
 /* Media query for screens larger than 1024px (desktop screens) */
 @media screen and (min-width: 1024px) {
-
-	/* Revert cards to three cards per row */
 	.task {
 		flex-basis: calc(33.33333% - 30px);
 		margin: 0 15px 30px;

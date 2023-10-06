@@ -25,6 +25,7 @@ const completedTasksTable = completedTasksModal.querySelector('table tbody');
 /* Initialize tasks array */
 let tasks;
 
+
 /* --- Helper functions --- */
 
 /**
@@ -81,6 +82,8 @@ function typeText() {
 			h1Elem.textContent += textToType.charAt(i);
 			i++;
 			setTimeout(typeNextCharacter, TYPE_DELAY);
+		}else{
+			caret.style.display = 'none';
 		}
 	}
 	typeNextCharacter();
@@ -122,13 +125,16 @@ function getCurrentDate() {
  * @returns {object} - The task object.
  */
 function createTaskObj(taskName) {
-	return { id: getLastId() + 1, name: taskName, desc: '', createdAt: getCurrentDate(), status: false };
+	return { id: getLastId() + 1, name: taskName, desc: '(edit task for description)', createdAt: getCurrentDate(), status: false };
 }
 
 /**
  * Creates the HTML for a task element.
- * @param {object} taskData - The task data.
  * @returns {string} - The HTML for the task element.
+ * @param taskId
+ * @param taskName
+ * @param taskDesc
+ * @param taskCreationDate
  */
 function createTaskElem(taskId, taskName, taskDesc, taskCreationDate) {
 	return `
@@ -276,13 +282,6 @@ function toggleModal(modalElem) {
 }
 
 /**
- * Toggles the edit task modal.
- */
-function toggleEditModal() {
-	toggleModal(taskEditModal);
-}
-
-/**
  * Fills the input fields in the edit task modal with data from a task element.
  * @param {Element} taskElem - The task element to retrieve data from.
  */
@@ -290,8 +289,7 @@ function fillModalInput(taskElem) {
 	const modalId = taskEditModal.querySelector('.taskId');
 	const modalTitle = taskEditModal.querySelector('#taskTitle');
 	const modalDesc = taskEditModal.querySelector('#taskDescription');
-	const taskId = getTaskId(taskElem.parentElement);
-	modalId.value = taskId;
+	modalId.value = getTaskId(taskElem.parentElement);
 	modalTitle.value = taskElem.querySelector('.task-title').textContent;
 	modalDesc.value = taskElem.querySelector('.task-desc').textContent;
 }
@@ -321,7 +319,7 @@ function updateTaskInStorage(taskData) {
 	if (index !== -1) {
 		tasks[index].name = taskData.name;
 		tasks[index].desc = taskData.desc;
-		tasks[index].status = (taskData.status === 'done') ? true : false;
+		tasks[index].status = (taskData.status === 'done');
 		setToStorage('tasks', tasks);
 	}
 }
@@ -403,8 +401,7 @@ function getColorName(color) {
  */
 function changeFavIcon(iconColorName) {
 	const favIcon = $.querySelector('#favIcon');
-	const favIconPath = `assets/img/icon/fav-${iconColorName}.png`;
-	favIcon.href = favIconPath;
+	favIcon.href = `assets/img/icon/fav-${iconColorName}.png`;
 }
 
 /**
@@ -413,8 +410,7 @@ function changeFavIcon(iconColorName) {
  */
 function changeLogo(logoColorName) {
 	const logo = $.querySelector('#logo');
-	const logoPath = `assets/img/logo/logo-${logoColorName}.png`;
-	logo.src = logoPath;
+	logo.src = `assets/img/logo/logo-${logoColorName}.png`;
 }
 
 /**
@@ -488,7 +484,7 @@ tasksSection.addEventListener('click', (event) => {
 	else if (hasClass(event.target, 'fa-edit')) {
 		fillModalInput(taskElem);
 		toggleModal(taskEditModal);
-	};
+	}
 });
 taskEditModal.addEventListener('click', (event) => {
 	event.preventDefault();
@@ -504,12 +500,20 @@ menuContainer.addEventListener('click', (event) => {
 		selectThemeColor(colorRgbCode);
 		setToStorage('theme-color', colorRgbCode);
 	}
-	else if (hasClass(target, 'fa-history')) completedTasksModal.classList.add('showModal');
+	else if (hasClass(target, 'fa-history')) toggleModal(completedTasksModal);
 });
 completedTasksModal.addEventListener('click', (event) => {
 	const target = event.target;
-	if (hasClass(target, 'fa-times')) completedTasksModal.classList.remove('showModal');
+	if (hasClass(target, 'fa-times')) toggleModal(completedTasksModal);
 	else if (hasClass(target, 'fa-trash')) removeCompletedTask(target.parentElement.parentElement);
 	else if (hasClass(target, 'fa-undo')) undoCompletedTask(target.parentElement.parentElement);
+
 })
 menuBtn.addEventListener('click', () => toggleMenuContent());
+document.addEventListener('keyup', (event) => {
+	if (event.key === 'Escape') {
+		if (hasClass(taskEditModal, 'showModal')) toggleModal(taskEditModal)
+		else if (hasClass(completedTasksModal, 'showModal')) toggleModal(completedTasksModal)
+		else if (hasClass(menuContent, 'show-menu')) toggleMenuContent();
+	}
+});
