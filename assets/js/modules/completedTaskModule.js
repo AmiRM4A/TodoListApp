@@ -89,7 +89,6 @@ function createCompletedTaskElem(taskId, taskTitle, taskDesc, createdAt, complet
  * @param {Array} tasksArr - The array containing the task data.
  */
 function markTaskAsCompleted(taskData, storageTask = false, tasksArr) {
-
 	const index = getStorageTaskIndex(taskData.id, tasksArr);
 	const taskElem = createCompletedTaskElem(
 		taskData.id,

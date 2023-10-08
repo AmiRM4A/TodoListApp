@@ -66,7 +66,7 @@ function updateTaskInStorage(taskData, tasksArr) {
 	if (index !== -1) {
 		tasksArr[index].name = taskData.name;
 		tasksArr[index].desc = taskData.desc;
-		tasksArr[index].status = (taskData.status === 'done');
+		tasksArr[index].status = taskData.status;
 		setToStorage(LOCAL_STORAGE_TASKS_KEY, tasksArr);
 	}
 }

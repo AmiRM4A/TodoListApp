@@ -1,6 +1,6 @@
 import { setToStorage, getFromStorage, updateTaskInStorage, loadStorageTasks } from './modules/storageModule.js';
-import { updateTaskInDom, removeTask, addTask, getTaskId } from './modules/taskModule.js';
-import { removeCompletedTask, undoCompletedTask } from './modules/completedTaskModule.js';
+import { updateTaskInDom, removeTask, addTask, getTaskId, selectTask } from './modules/taskModule.js';
+import { removeCompletedTask, undoCompletedTask, markTaskAsCompleted } from './modules/completedTaskModule.js';
 import { hasClass, toggleClass } from './modules/utilitiesModule.js';
 import { typeText } from './modules/typingAnimationModule.js';
 import { selectThemeColor } from './modules/themeModule.js';
@@ -75,10 +75,16 @@ function handleSaveModalBtnClick() {
 		id: form.get('task-id'),
 		name: form.get('taskTitle'),
 		desc: form.get('taskDescription'),
-		status: form.get('taskStatus')
+		status: (form.get('taskStatus') === 'done')
+	}
+	if (data.status) {
+		markTaskAsCompleted(data, false, tasks);
+		selectTask(data.id, tasksCon).remove();
+
+	} else {
+		updateTaskInDom(data, tasksCon);
 	}
 	updateTaskInStorage(data, tasks);
-	updateTaskInDom(data, tasksCon);
 	toggleClass(taskEditModal, 'showModal');
 }
 
