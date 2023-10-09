@@ -92,11 +92,13 @@ function handleSaveModalBtnClick() {
 window.addEventListener('load', initialize);
 window.addEventListener('scroll', () => {
 	const header = $.querySelector('header');
-	if (window.scrollY > 50) {
+	console.log(window);
+	if (window.scrollY > 59) {
 		header.classList.add('sticky');
 		return;
+	} else if (window.scrollY < 51) {
+		header.classList.remove('sticky');
 	}
-	header.classList.remove('sticky');
 });
 
 tasksSection.addEventListener('click', (event) => {
