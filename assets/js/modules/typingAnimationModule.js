@@ -12,7 +12,7 @@ const caret = document.querySelector('.blink-caret');
  *
  * @description Types the header text with a typewriter-style animation effect.
  */
-function typeText() {
+function typeHeaderText() {
 	let i = 0;
 	const typeNextCharacter = () => {
 		if (i < textToType.length) {
@@ -26,4 +26,4 @@ function typeText() {
 	typeNextCharacter();
 }
 
-export { typeText };
+export { typeHeaderText };

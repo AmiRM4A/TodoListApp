@@ -91,7 +91,7 @@ nav {
 
 /* Input field styles when focused */
 #tasksSection input:focus {
-	color: #fff;
+	color: #ffffff;
 }
 
 /* Input field styles on hover */
@@ -148,7 +148,7 @@ nav {
 #tasksSection h1 {
 	font-size: 2.5rem;
 	text-align: center;
-	color: #fff;
+	color: #ffffff;
 	letter-spacing: 0.20rem;
 	margin-top: 50px;
 	max-width: 480px;
@@ -266,7 +266,7 @@ nav {
 	min-height: 100px;
 	margin: 0 0 25px;
 	overflow: hidden;
-	color: #FFF;
+	color: #ffffff;
 	z-index: 2;
 	position: relative;
 }
@@ -322,7 +322,7 @@ nav {
 }
 
 .doneTask .done-btn {
-	background-color: #FF7597 !important;
+	background-color: #ff7597 !important;
 	display: block !important;
 	bottom: 0 !important;
 }
@@ -354,7 +354,7 @@ nav {
 	width: 100% !important;
 	padding: 10px;
 	margin-bottom: 12px;
-	border: 1px solid #ccc;
+	border: 1px solid #cccccc;
 	border-radius: 5px;
 }
 
@@ -386,7 +386,7 @@ nav {
 .menuContent .fa-paint-roller {
 	position: absolute;
 	font-size: 24px;
-	color: #000;
+	color: #000000;
 	text-decoration: none;
 }
 
@@ -438,7 +438,7 @@ nav {
 
 /* Styles for color items */
 .colorItem {
-	border: 0.5px solid #333;
+	border: 0.5px solid #333333;
 	position: absolute;
 	width: 20px;
 	height: 20px;
@@ -522,7 +522,7 @@ a {
 /* Footer styles */
 footer {
 	text-align: center;
-	color: #fff;
+	color: #ffffff;
 	width: 100%;
 	padding: 20px;
 	background-color: #000000;
@@ -537,6 +537,9 @@ footer .fa-heart {
 	color: var(--theme-color);
 }
 
+.showModal {
+	display: block !important;
+}
 
 /* Media Queries */
 
@@ -590,10 +593,6 @@ footer .fa-heart {
 	.task:hover .done-btn {
 		bottom: 0;
 	}
-}
-
-.showModal {
-	display: block !important;
 }
 
 /* Media query for screens larger than 1024px (desktop screens) */

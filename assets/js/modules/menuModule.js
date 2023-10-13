@@ -7,8 +7,7 @@
  * @description Toggles the visibility of the color selection menu.
  */
 function toggleColorMenu() {
-	const colorsMenu = document.querySelector('.colorMenu');
-	colorsMenu.classList.toggle('show-menu');
+	document.querySelector('.colorMenu').classList.toggle('show-menu');
 }
 
 /**

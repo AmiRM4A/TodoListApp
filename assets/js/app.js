@@ -1,8 +1,8 @@
-import { setToStorage, getFromStorage, updateTaskInStorage, loadStorageTasks } from './modules/storageModule.js';
+import { setToStorage, getFromStorage, updateTaskInStorage, loadStorageTasks, getStorageTaskIndex } from './modules/storageModule.js';
 import { updateTaskInDom, removeTask, addTask, getTaskId, selectTask, getTaskData } from './modules/taskModule.js';
 import { undoCompletedTask, markTaskAsCompleted } from './modules/completedTaskModule.js';
-import { hasClass, toggleClass, getParentElementByClassName } from './modules/utilitiesModule.js';
-import { typeText } from './modules/typingAnimationModule.js';
+import { hasClass, toggleClass, getParentElementByClassName, removeClass, addClass } from './modules/utilitiesModule.js';
+import { typeHeaderText } from './modules/typingAnimationModule.js';
 import { selectThemeColor } from './modules/themeModule.js';
 import { toggleColorMenu, toggleMenuContent } from './modules/menuModule.js';
 import { $, LOCAL_STORAGE_TASKS_KEY } from './modules/constantsModule.js';
@@ -27,11 +27,9 @@ let tasks;
  * @description Initializes data from local storage and sets up event listeners for the application.
  */
 function initialize() {
-	typeText();
+	typeHeaderText();
 	const colorRgbCode = getFromStorage('theme-color', true);
-	if (colorRgbCode !== null) {
-		selectThemeColor(colorRgbCode);
-	}
+	if (colorRgbCode !== null) selectThemeColor(colorRgbCode);
 	const storageTasksArr = getFromStorage(LOCAL_STORAGE_TASKS_KEY, true);
 	if (storageTasksArr !== null && typeof storageTasksArr === 'object') {
 		loadStorageTasks(storageTasksArr, tasksCon);
@@ -69,6 +67,7 @@ function fillEditTaskModalInputs(taskElem) {
  * @description Handles the click event on the save button in the edit task modal and updates the task data.
  */
 function handleSaveModalBtnClick() {
+	// Get new changes of task from tasks edit modal
 	const form = new FormData(taskEditModal.querySelector('form'));
 	const data = {
 		id: Number(form.get('task-id')),
@@ -76,15 +75,16 @@ function handleSaveModalBtnClick() {
 		desc: form.get('taskDescription'),
 		status: (form.get('taskStatus') === 'done')
 	}
+
+	// Mark task as completed/uncompleted based on status input value
 	const taskElem = selectTask(data.id, tasksCon);
-	if (data.status) {
-		console.log(getTaskData(tasks, data.id));
-		markTaskAsCompleted(taskElem, getTaskData(tasks, data.id), tasks);
-	} else {
-		undoCompletedTask(taskElem, tasks);
-	}
-	updateTaskInDom(selectTask(data.id, tasksCon), tasksCon);
-	updateTaskInStorage(getStorageTaskIndex(data.id, tasksArr), tasks);
+	if (data.status) markTaskAsCompleted(taskElem, getTaskData(tasks, data.id), tasks);
+	else undoCompletedTask(taskElem, tasks);
+
+	// Apply new changes to storage and page
+	updateTaskInDom(selectTask(data.id, tasksCon), data);
+	updateTaskInStorage(getStorageTaskIndex(data.id, tasks), tasks, data);
+
 	toggleClass(taskEditModal, 'showModal');
 }
 
@@ -93,12 +93,10 @@ window.addEventListener('load', initialize);
 
 window.addEventListener('scroll', () => {
 	const header = $.querySelector('header');
-	console.log(window);
 	if (window.scrollY > 59) {
-		header.classList.add('sticky');
-		return;
+		addClass('sticky', header);
 	} else if (window.scrollY < 51) {
-		header.classList.remove('sticky');
+		removeClass('sticky', header);
 	}
 });
 
@@ -117,16 +115,15 @@ tasksSection.addEventListener('click', (event) => {
 	}
 	else if (hasClass(target, 'fa-undo')) undoCompletedTask(taskElem, tasks);
 	else if (hasClass(target, 'done-span') || hasClass(target, 'done-btn')) {
-		const taskId = getTaskId(taskElem);
-		const taskData = getTaskData(tasks, taskId);
-		markTaskAsCompleted(taskElem, taskData, tasks);
+		// Mark selected task as completed
+		markTaskAsCompleted(taskElem, getTaskData(tasks, getTaskId(taskElem)), tasks);
 	}
 });
 
 taskEditModal.addEventListener('click', (event) => {
-	event.preventDefault();
-	if (hasClass(event.target, 'closeButton')) toggleClass(taskEditModal, 'showModal');
-	else if (hasClass(event.target, 'saveModal')) handleSaveModalBtnClick();
+	const target = event.target;
+	if (hasClass(target, 'closeButton')) toggleClass(taskEditModal, 'showModal');
+	else if (hasClass(target, 'saveModal')) handleSaveModalBtnClick();
 });
 
 menuContainer.addEventListener('click', (event) => {
@@ -141,11 +138,11 @@ menuContainer.addEventListener('click', (event) => {
 	else if (hasClass(target, 'fa-history')) toggleClass(completedTasksModal, 'showModal');
 });
 
-})
 menuBtn.addEventListener('click', () => toggleMenuContent(menuBtn, menuContent));
 
 document.addEventListener('keyup', (event) => {
 	if (event.key === 'Escape') {
+		// After pressing Esc key, check for open modals to close them
 		if (hasClass(taskEditModal, 'showModal')) toggleClass(taskEditModal, 'showModal');
 		else if (hasClass(completedTasksModal, 'showModal')) toggleClass(completedTasksModal, 'showModal');
 		else if (hasClass(menuContent, 'show-menu')) toggleMenuContent(menuBtn, menuContent);

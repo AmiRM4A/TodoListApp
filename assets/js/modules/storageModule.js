@@ -60,11 +60,11 @@ function getStorageTaskIndex(id, tasksArr) {
  *
  * @description Updates task data in local storage based on the provided task data.
  */
-function updateTaskInStorage(taskIndex, tasksArr) {
+function updateTaskInStorage(taskIndex, tasksArr, newTaskData) {
 	if (taskIndex !== -1) {
-		tasksArr[taskIndex].name = taskData.name;
-		tasksArr[taskIndex].desc = taskData.desc;
-		tasksArr[taskIndex].status = taskData.status;
+		tasksArr[taskIndex].name = newTaskData.name;
+		tasksArr[taskIndex].desc = newTaskData.desc;
+		tasksArr[taskIndex].status = newTaskData.status;
 		setToStorage(LOCAL_STORAGE_TASKS_KEY, tasksArr);
 	}
 }
@@ -81,9 +81,7 @@ function updateTaskInStorage(taskIndex, tasksArr) {
  * @description Loads tasks from local storage and populates the task list in the DOM.
  */
 function loadStorageTasks(taskArray, tasksContainer) {
-	taskArray.forEach(taskData => {
-		addTask(taskData, tasksContainer, taskArray, taskData.status);
-	});
+	taskArray.forEach(taskData => addTask(taskData, tasksContainer, taskArray, taskData.status));
 }
 
 export { setToStorage, getFromStorage, getStorageTaskIndex, updateTaskInStorage, loadStorageTasks };

@@ -80,14 +80,14 @@ function createTaskElem(taskId, taskName, taskDesc, taskCreationDate) {
  * @name updateTaskInDom
  *
  * @param {object} taskData - The updated task data.
- * @param {Element} tasksContainer - The container element for displaying tasks in the DOM.
+ * @param {Element} taskElem - the element of the related task you want to update
  *
  * @description Updates the displayed task element with the provided task data in the DOM.
  */
-function updateTaskInDom(taskElem) {
-	if (taskElem != null) {
-		taskElem.querySelector('.task-title').textContent = taskData.name;
-		taskElem.querySelector('.task-desc').textContent = taskData.desc;
+function updateTaskInDom(taskElem, newTaskData) {
+	if (taskElem !== null) {
+		taskElem.querySelector('.task-title').textContent = newTaskData.name;
+		taskElem.querySelector('.task-desc').textContent = newTaskData.desc;
 	}
 }
 
@@ -122,12 +122,9 @@ function getTaskData(tasksList, taskId) {
  * @description Retrieves the ID of the last task in the provided array of tasks.
  */
 function getLastTaskId(tasksArr) {
-	if (tasksArr.length < 1) return 0;
 	let lastId = 0;
-	tasksArr.forEach(task => {
-		if (task.id > lastId) lastId = task.id;
-	});
-	return lastId;
+	if (tasksArr.length < 1) return lastId;
+	return tasksArr.forEach(task => lastId = task.id > lastId ? task.id : lastId);
 }
 
 /**
@@ -158,6 +155,7 @@ function removeTask(taskElem, tasksArr) {
  * @param {object|string} taskData - The task data or task name.
  * @param {Element} tasksContainer - The container element for displaying tasks in the DOM.
  * @param {Array} tasksArr - An array containing task data.
+ * @param {fromStorage} - Indicates whether the task is stored in local storage. Default is false
  *
  * @description Adds a task to the tasks array and updates local storage accordingly.
  */
@@ -177,4 +175,4 @@ function addTask(taskData, tasksContainer, tasksArr, fromStorage = false) {
 	resetInput(document.getElementById('taskInput'));
 }
 
-export { selectTask, createTaskObj, createTaskElem, updateTaskInDom, removeTask, addTask, getTaskId, getTaskData }
+export { selectTask, updateTaskInDom, removeTask, addTask, getTaskId, getTaskData }
