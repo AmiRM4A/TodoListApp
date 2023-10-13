@@ -1,27 +1,6 @@
 import { setToStorage, getStorageTaskIndex } from './storageModule.js';
-import { addTask } from './taskModule.js';
-import { getCurrentDate } from './utilitiesModule.js';
+import { getCurrentDate, addClass, removeClass, swapTaskIconsTo } from './utilitiesModule.js';
 import { LOCAL_STORAGE_TASKS_KEY } from './constantsModule.js';
-
-/**
- * Removes a completed task from the tasks array and updates local storage.
- *
- * @function
- * @name removeCompletedTask
- *
- * @param {Element} completedTaskElem - The completed task element to be removed.
- * @param {Array} tasksArr - The array containing the task data.
- *
- * @description
- * This function takes a completed task element as input, removes the task from the `tasks` array,
- * updates the local storage, and removes the task element from the DOM.
- */
-function removeCompletedTask(completedTaskElem, tasksArr) {
-	const index = getStorageTaskIndex(completedTaskElem.dataset.taskId, tasksArr);
-	tasksArr.splice(index, 1);
-	setToStorage(LOCAL_STORAGE_TASKS_KEY, tasksArr);
-	completedTaskElem.remove();
-}
 
 /**
  * Undoes a completed task and moves it back to the active tasks list.
@@ -38,14 +17,21 @@ function removeCompletedTask(completedTaskElem, tasksArr) {
  * in the `tasks` array, updates the local storage, adds the task back to the active tasks list in the DOM,
  * and removes the completed task element from the DOM.
  */
-function undoCompletedTask(completedTaskElem, tasksContainer, tasksArr) {
+function undoCompletedTask(completedTaskElem, tasksArr) {
+	// change the status of task to uncompleted in storage
 	const index = getStorageTaskIndex(completedTaskElem.dataset.taskId, tasksArr);
-	const taskData = tasksArr.find(task => task.id === Number(completedTaskElem.dataset.taskId));
-	tasksArr[index].status = false;
-	delete tasksArr[index].completedAt;
+	tasksArr[index]['status'] = false;
+	delete tasksArr[index]['completedAt'];
 	setToStorage(LOCAL_STORAGE_TASKS_KEY, tasksArr);
-	addTask(taskData, tasksContainer, tasksArr);
-	completedTaskElem.remove();
+
+	// change the UI status of task to uncompleted in page
+	removeClass('doneTask', completedTaskElem);
+	swapTaskIconsTo('uncompleted', completedTaskElem);
+	completedTaskElem.querySelector('.task-info').innerHTML = `
+	<i class="fas fa-info-circle"></i>
+        Created:
+    <span style="color: var(--theme-color);"> ${tasksArr[index]['createdAt']} </span>
+	`;
 }
 
 /**
@@ -88,22 +74,25 @@ function createCompletedTaskElem(taskId, taskTitle, taskDesc, createdAt, complet
  * @param {boolean} storageTask - Indicates whether the task is stored in local storage. Default is false.
  * @param {Array} tasksArr - The array containing the task data.
  */
-function markTaskAsCompleted(taskData, storageTask = false, tasksArr) {
-	const index = getStorageTaskIndex(taskData.id, tasksArr);
-	const taskElem = createCompletedTaskElem(
-		taskData.id,
-		taskData.name,
-		taskData.desc,
-		taskData.createdAt,
-		taskData.completedAt || getCurrentDate()
-	);
-	if (!storageTask) {
+function markTaskAsCompleted(taskElem, taskData, tasksArr, fromStorage = false) {
+	// change the status of task to completed in storage (if it wasn't from storage)
+	if (!fromStorage) {
+		const index = tasksArr.findIndex(task => task.id === taskData.id);
 		tasksArr[index].status = true;
 		tasksArr[index].completedAt = getCurrentDate();
 		setToStorage(LOCAL_STORAGE_TASKS_KEY, tasksArr);
 	}
-	const completedTasksTable = document.querySelector('table tbody');
-	completedTasksTable.insertAdjacentHTML('beforeend', taskElem);
+	// change the status of task to completed in page
+	addClass('doneTask', taskElem);
+	swapTaskIconsTo('completed', taskElem);
+	taskElem.querySelector('.task-info').innerHTML = `
+	<i class="fa-solid fa-circle-check"></i>
+        Completed:
+    <span style="color: var(--theme-color);"> ${taskData.completedAt || tasksArr[index].completedAt} </span>
+	`;
 }
 
-export { removeCompletedTask, undoCompletedTask, markTaskAsCompleted, createCompletedTaskElem };
+export { undoCompletedTask, markTaskAsCompleted, createCompletedTaskElem };
+
+
+//todo:: work on clean code of the project then do items in .todo file and after that merge it with main branch, also use webStorm app for find some other problems too

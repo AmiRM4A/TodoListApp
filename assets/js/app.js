@@ -1,7 +1,7 @@
 import { setToStorage, getFromStorage, updateTaskInStorage, loadStorageTasks } from './modules/storageModule.js';
-import { updateTaskInDom, removeTask, addTask, getTaskId, selectTask } from './modules/taskModule.js';
-import { removeCompletedTask, undoCompletedTask, markTaskAsCompleted } from './modules/completedTaskModule.js';
-import { hasClass, toggleClass } from './modules/utilitiesModule.js';
+import { updateTaskInDom, removeTask, addTask, getTaskId, selectTask, getTaskData } from './modules/taskModule.js';
+import { undoCompletedTask, markTaskAsCompleted } from './modules/completedTaskModule.js';
+import { hasClass, toggleClass, getParentElementByClassName } from './modules/utilitiesModule.js';
 import { typeText } from './modules/typingAnimationModule.js';
 import { selectThemeColor } from './modules/themeModule.js';
 import { toggleColorMenu, toggleMenuContent } from './modules/menuModule.js';
@@ -14,7 +14,6 @@ const menuContent = $.querySelector('.menuContent');
 const menuBtn = $.querySelector(".menuBtn");
 const taskEditModal = $.getElementById('taskEditModal');
 const tasksSection = $.getElementById('tasksSection');
-const completedTasksModal = $.getElementById('completedTasksModal');
 
 /* Initialize tasks array */
 let tasks;
@@ -72,24 +71,26 @@ function fillEditTaskModalInputs(taskElem) {
 function handleSaveModalBtnClick() {
 	const form = new FormData(taskEditModal.querySelector('form'));
 	const data = {
-		id: form.get('task-id'),
+		id: Number(form.get('task-id')),
 		name: form.get('taskTitle'),
 		desc: form.get('taskDescription'),
 		status: (form.get('taskStatus') === 'done')
 	}
+	const taskElem = selectTask(data.id, tasksCon);
 	if (data.status) {
-		markTaskAsCompleted(data, false, tasks);
-		selectTask(data.id, tasksCon).remove();
-
+		console.log(getTaskData(tasks, data.id));
+		markTaskAsCompleted(taskElem, getTaskData(tasks, data.id), tasks);
 	} else {
-		updateTaskInDom(data, tasksCon);
+		undoCompletedTask(taskElem, tasks);
 	}
-	updateTaskInStorage(data, tasks);
+	updateTaskInDom(selectTask(data.id, tasksCon), tasksCon);
+	updateTaskInStorage(getStorageTaskIndex(data.id, tasksArr), tasks);
 	toggleClass(taskEditModal, 'showModal');
 }
 
 /* --- Event listeners --- */
 window.addEventListener('load', initialize);
+
 window.addEventListener('scroll', () => {
 	const header = $.querySelector('header');
 	console.log(window);
@@ -103,16 +104,22 @@ window.addEventListener('scroll', () => {
 
 tasksSection.addEventListener('click', (event) => {
 	event.preventDefault();
-	const taskElem = event.target.parentElement.parentElement;
 	const target = event.target;
+	const taskElem = getParentElementByClassName(target, 'task');
 	if (hasClass(target, 'addTodoBtn')) {
 		const taskName = taskInput.value;
-		if (taskName) addTask(taskName, tasksCon, tasks);
+		if (taskName) addTask(taskName, tasksCon, tasks, false);
 	}
 	else if (hasClass(target, 'fa-times')) removeTask(taskElem, tasks);
 	else if (hasClass(target, 'fa-edit')) {
 		fillEditTaskModalInputs(taskElem);
 		toggleClass(taskEditModal, 'showModal');
+	}
+	else if (hasClass(target, 'fa-undo')) undoCompletedTask(taskElem, tasks);
+	else if (hasClass(target, 'done-span') || hasClass(target, 'done-btn')) {
+		const taskId = getTaskId(taskElem);
+		const taskData = getTaskData(tasks, taskId);
+		markTaskAsCompleted(taskElem, taskData, tasks);
 	}
 });
 
@@ -133,14 +140,10 @@ menuContainer.addEventListener('click', (event) => {
 	}
 	else if (hasClass(target, 'fa-history')) toggleClass(completedTasksModal, 'showModal');
 });
-completedTasksModal.addEventListener('click', (event) => {
-	const target = event.target;
-	if (hasClass(target, 'fa-times')) toggleClass(completedTasksModal, 'showModal');
-	else if (hasClass(target, 'fa-trash')) removeCompletedTask(target.parentElement.parentElement, tasks);
-	else if (hasClass(target, 'fa-undo')) undoCompletedTask(target.parentElement.parentElement, tasksCon, tasks);
 
 })
 menuBtn.addEventListener('click', () => toggleMenuContent(menuBtn, menuContent));
+
 document.addEventListener('keyup', (event) => {
 	if (event.key === 'Escape') {
 		if (hasClass(taskEditModal, 'showModal')) toggleClass(taskEditModal, 'showModal');

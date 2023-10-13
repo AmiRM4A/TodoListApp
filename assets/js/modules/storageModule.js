@@ -1,5 +1,4 @@
 import { LOCAL_STORAGE_TASKS_KEY } from "./constantsModule.js";
-import { markTaskAsCompleted } from "./completedTaskModule.js";
 import { addTask } from "./taskModule.js";
 
 /**
@@ -61,12 +60,11 @@ function getStorageTaskIndex(id, tasksArr) {
  *
  * @description Updates task data in local storage based on the provided task data.
  */
-function updateTaskInStorage(taskData, tasksArr) {
-	const index = getStorageTaskIndex(taskData.id, tasksArr);
-	if (index !== -1) {
-		tasksArr[index].name = taskData.name;
-		tasksArr[index].desc = taskData.desc;
-		tasksArr[index].status = taskData.status;
+function updateTaskInStorage(taskIndex, tasksArr) {
+	if (taskIndex !== -1) {
+		tasksArr[taskIndex].name = taskData.name;
+		tasksArr[taskIndex].desc = taskData.desc;
+		tasksArr[taskIndex].status = taskData.status;
 		setToStorage(LOCAL_STORAGE_TASKS_KEY, tasksArr);
 	}
 }
@@ -83,8 +81,8 @@ function updateTaskInStorage(taskData, tasksArr) {
  * @description Loads tasks from local storage and populates the task list in the DOM.
  */
 function loadStorageTasks(taskArray, tasksContainer) {
-	taskArray.forEach(task => {
-		task.status ? markTaskAsCompleted(task, true, taskArray) : addTask(task, tasksContainer, taskArray);
+	taskArray.forEach(taskData => {
+		addTask(taskData, tasksContainer, taskArray, taskData.status);
 	});
 }
 

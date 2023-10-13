@@ -88,4 +88,28 @@ function changeLogo(newLogoPath) {
 	logo.src = newLogoPath;
 }
 
-export { getCurrentDate, resetInput, hasClass, toggleClass, changeLogo, changeFavIcon };
+function addClass(className, ...elements) {
+	elements.forEach(elem => elem.classList.add(className));
+}
+
+function removeClass(className, ...elements) {
+	elements.forEach(elem => elem.classList.remove(className));
+}
+
+function getParentElementByClassName(element, parentElementClassName) {
+	let elem = element;
+	while (!hasClass(elem, parentElementClassName)) {
+		elem = elem.parentElement;
+		if (elem.tagName === 'BODY') break;
+	}
+	return elem;
+}
+
+function swapTaskIconsTo(to = 'completed', taskElem) {
+	const spanIconElem = taskElem.querySelector('.done-span');
+	const btnIconElem = taskElem.querySelector('.done-btn');
+	to === 'completed' ? (addClass('fa-undo', btnIconElem, spanIconElem), removeClass('fa-check', btnIconElem, spanIconElem)) : (addClass('fa-check', btnIconElem, spanIconElem), removeClass('fa-undo', btnIconElem, spanIconElem));
+}
+
+
+export { getCurrentDate, resetInput, hasClass, toggleClass, changeLogo, changeFavIcon, removeClass, addClass, getParentElementByClassName, swapTaskIconsTo };

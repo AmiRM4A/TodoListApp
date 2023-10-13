@@ -1,30 +1,7 @@
-import { getCurrentDate, resetInput, hasClass } from './utilitiesModule.js';
+import { getCurrentDate, resetInput } from './utilitiesModule.js';
 import { markTaskAsCompleted } from './completedTaskModule.js';
 import { setToStorage, getStorageTaskIndex } from './storageModule.js';
 import { LOCAL_STORAGE_TASKS_KEY } from './constantsModule.js';
-
-/**
- * Sets an event listener on a task element to handle marking a task as completed when a user interacts with it.
- *
- * @function
- * @name setCompleteTaskEvent
- *
- * @param {object} taskData - An object containing task details, including id, name, description, createdAt, and completedAt.
- * @param {Element} tasksContainer - The container element for displaying tasks in the DOM.
- * @param {Array} tasksArr - The array containing task data.
- *
- * @description Sets an event listener on a task element to handle marking a task as completed when a user interacts with it.
- */
-function setCompleteTaskEvent(taskData, tasksContainer, tasksArr) {
-	const taskElem = selectTask(taskData.id, tasksContainer);
-	if (taskElem === null) return;
-	taskElem.addEventListener('click', (event) => {
-		if (hasClass(event.target, 'fa-check')) {
-			markTaskAsCompleted(taskData, false, tasksArr);
-			taskElem.remove();
-		}
-	});
-}
 
 /**
  * Selects a task element by its ID.
@@ -81,13 +58,15 @@ function createTaskElem(taskId, taskName, taskDesc, taskCreationDate) {
               <span class="fa fa-check done-span"></span>
               <span class="fas fa-times"></span>
             </div>
-            <div class="task-info">
+            <div class="task-detail">
               <div class="task-title">${taskName}</div>
               <div class="task-desc">${taskDesc}</div>
             </div>
-            <span class="fas fa-info-circle"></span>
-            Created:
-            <span style="color: var(--theme-color);"> ${taskCreationDate} </span>
+			<div class="task-info">
+			    <i class="fas fa-info-circle"></i>
+            	Created:
+            	<span style="color: var(--theme-color);"> ${taskCreationDate} </span>
+			</div>
           </div>
           <button class="fa fa-check done-btn" aria-hidden="true"></button>
         </div>
@@ -105,8 +84,7 @@ function createTaskElem(taskId, taskName, taskDesc, taskCreationDate) {
  *
  * @description Updates the displayed task element with the provided task data in the DOM.
  */
-function updateTaskInDom(taskData, tasksContainer) {
-	const taskElem = selectTask(Number(taskData.id), tasksContainer);
+function updateTaskInDom(taskElem) {
 	if (taskElem != null) {
 		taskElem.querySelector('.task-title').textContent = taskData.name;
 		taskElem.querySelector('.task-desc').textContent = taskData.desc;
@@ -125,7 +103,11 @@ function updateTaskInDom(taskData, tasksContainer) {
  * @description Gets the ID of a task element in the DOM.
  */
 function getTaskId(taskElem) {
-	return Number(taskElem.parentElement.dataset.taskId);
+	return Number(taskElem.dataset.taskId);
+}
+
+function getTaskData(tasksList, taskId) {
+	return tasksList.find(taskData => taskData.id === taskId);
 }
 
 /**
@@ -164,7 +146,7 @@ function removeTask(taskElem, tasksArr) {
 	const index = getStorageTaskIndex(taskElemId, tasksArr);
 	tasksArr.splice(index, 1);
 	setToStorage(LOCAL_STORAGE_TASKS_KEY, tasksArr);
-	taskElem.parentElement.remove();
+	taskElem.remove();
 }
 
 /**
@@ -179,16 +161,20 @@ function removeTask(taskElem, tasksArr) {
  *
  * @description Adds a task to the tasks array and updates local storage accordingly.
  */
-function addTask(taskData, tasksContainer, tasksArr) {
+function addTask(taskData, tasksContainer, tasksArr, fromStorage = false) {
 	if (typeof taskData != 'object') {
 		taskData = createTaskObj(getLastTaskId(tasksArr) + 1, taskData);
 		tasksArr.push(taskData);
 		setToStorage(LOCAL_STORAGE_TASKS_KEY, tasksArr);
 	}
-	const taskElem = createTaskElem(taskData.id, taskData.name, taskData.desc, taskData.createdAt);
-	tasksContainer.insertAdjacentHTML('beforeend', taskElem);
-	setCompleteTaskEvent(taskData, tasksContainer, tasksArr);
+	const htmlTaskCode = createTaskElem(taskData.id, taskData.name, taskData.desc, taskData.createdAt);
+	tasksContainer.insertAdjacentHTML('beforeend', htmlTaskCode);
+	const taskElem = selectTask(taskData.id, tasksContainer);
+	if (fromStorage) {
+		markTaskAsCompleted(taskElem, taskData, tasksArr, true);
+		return;
+	}
 	resetInput(document.getElementById('taskInput'));
 }
 
-export { setCompleteTaskEvent, selectTask, createTaskObj, createTaskElem, updateTaskInDom, removeTask, addTask, getTaskId }
+export { selectTask, createTaskObj, createTaskElem, updateTaskInDom, removeTask, addTask, getTaskId, getTaskData }

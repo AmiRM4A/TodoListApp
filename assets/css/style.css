@@ -262,7 +262,7 @@ nav {
 }
 
 /* Styles for task information */
-.task-info {
+.task-detail {
 	min-height: 100px;
 	margin: 0 0 25px;
 	overflow: hidden;
@@ -308,6 +308,23 @@ nav {
 	display: flex;
 	color: #ffffff;
 	flex-direction: column;
+}
+
+/* Done tasks */
+
+.doneTask {
+	opacity: 0.5;
+	box-shadow: none !important;
+}
+
+.doneTask .task-detail {
+	text-decoration: line-through;
+}
+
+.doneTask .done-btn {
+	background-color: #FF7597 !important;
+	display: block !important;
+	bottom: 0 !important;
 }
 
 /* Styles for the close button of the modal */
@@ -502,42 +519,6 @@ a {
 	transition: all 0.3s ease;
 }
 
-
-/* Completed tasks modal styles */
-#completedTasksModal .close {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	font-size: 20px;
-	cursor: pointer;
-}
-
-/* Make the table responsive */
-#completedTasksModal table {
-	width: 100%;
-	border-collapse: collapse;
-}
-
-#completedTasksModal th,
-#completedTasksModal td {
-	text-align: center;
-	padding: 8px;
-}
-
-/* FontAwesome Icons */
-#completedTasksModal i {
-	font-size: 18px;
-	margin-right: 7px;
-	cursor: pointer;
-}
-
-#completedTasksModal .taskActions {
-	display: flex;
-	align-items: center;
-	flex-direction: row;
-	justify-content: space-evenly;
-}
-
 /* Footer styles */
 footer {
 	text-align: center;
@@ -584,15 +565,8 @@ footer .fa-heart {
 		display: inline-block;
 	}
 
-	#completedTasksModal .taskId,
-	#completedTasksModal .taskCreationDate,
-	#completedTasksModal .taskCompletionDate {
-		display: none;
-	}
-
-	#completedTasksModal .modalContent {
-		width: 75%;
-		padding: 30px 25px;
+	.doneTask .done-span {
+		display: none !important;
 	}
 }
 
@@ -603,10 +577,6 @@ footer .fa-heart {
 	.task {
 		flex-basis: calc(50% - 30px);
 		margin: 0 15px 30px;
-	}
-
-	#completedTasksModal .taskCreationDate {
-		display: none;
 	}
 }
 
