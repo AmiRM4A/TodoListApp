@@ -39,7 +39,7 @@ function getFromStorage(key, json = true) {
  * @function
  * @name getStorageTaskIndex
  *
- * @param {string} id - The unique identifier of the task.
+ * @param {number} id - The unique identifier of the task.
  * @param {Array} tasksArr - The array containing task data.
  * @returns {number} - The index of the task in the array.
  *
@@ -55,8 +55,9 @@ function getStorageTaskIndex(id, tasksArr) {
  * @function
  * @name updateTaskInStorage
  *
- * @param {object} taskData - The updated task data.
+ * @param {number} taskIndex - The updated task index in localStorage.
  * @param {Array} tasksArr - The array containing task data.
+ * @param {object} newTaskData - The new changes of task in object form
  *
  * @description Updates task data in local storage based on the provided task data.
  */

@@ -80,7 +80,7 @@ function createTaskElem(taskId, taskName, taskDesc, taskCreationDate) {
  * @function
  * @name updateTaskInDom
  *
- * @param {object} taskData - The updated task data.
+ * @param {object} newTaskData - The updated task data.
  * @param {Element} taskElem - the element of the related task you want to update
  *
  * @description Updates the displayed task element with the provided task data in the DOM.
@@ -124,8 +124,8 @@ function getTaskData(tasksList, taskId) {
  */
 function getLastTaskId(tasksArr) {
 	let lastId = 0;
-	if (tasksArr.length < 1) return lastId;
-	return tasksArr.forEach(task => lastId = task.id > lastId ? task.id : lastId);
+	tasksArr.forEach(task => lastId = (task.id > lastId) ? task.id : lastId);
+	return lastId
 }
 
 /**
@@ -156,7 +156,7 @@ function removeTask(taskElem, tasksArr) {
  * @param {object|string} taskData - The task data or task name.
  * @param {Element} tasksContainer - The container element for displaying tasks in the DOM.
  * @param {Array} tasksArr - An array containing task data.
- * @param {fromStorage} - Indicates whether the task is stored in local storage. Default is false
+ * @param {boolean} fromStorage - Indicates whether the task is stored in local storage. Default is false
  *
  * @description Adds a task to the tasks array and updates local storage accordingly.
  */

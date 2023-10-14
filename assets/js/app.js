@@ -76,7 +76,7 @@ function handleSaveModalBtnClick() {
 		status: (form.get('taskStatus') === 'done')
 	}
 
-	// Mark task as completed/uncompleted based on status input value
+	// Mark tasks as completed/uncompleted based on status input value
 	const taskElem = selectTask(data.id, tasksCon);
 	if (data.status) markTaskAsCompleted(taskElem, getTaskData(tasks, data.id), tasks);
 	else undoCompletedTask(taskElem, tasks);
@@ -135,7 +135,6 @@ menuContainer.addEventListener('click', (event) => {
 		selectThemeColor(colorRgbCode);
 		setToStorage('theme-color', colorRgbCode);
 	}
-	else if (hasClass(target, 'fa-history')) toggleClass(completedTasksModal, 'showModal');
 });
 
 menuBtn.addEventListener('click', () => toggleMenuContent(menuBtn, menuContent));
@@ -144,7 +143,6 @@ document.addEventListener('keyup', (event) => {
 	if (event.key === 'Escape') {
 		// After pressing Esc key, check for open modals to close them
 		if (hasClass(taskEditModal, 'showModal')) toggleClass(taskEditModal, 'showModal');
-		else if (hasClass(completedTasksModal, 'showModal')) toggleClass(completedTasksModal, 'showModal');
 		else if (hasClass(menuContent, 'show-menu')) toggleMenuContent(menuBtn, menuContent);
 	}
 });

@@ -324,6 +324,7 @@ nav {
 
 .doneTask .done-btn {
 	background-color: #ff7597 !important;
+	position: absolute;
 	display: block !important;
 	bottom: 0 !important;
 }
@@ -413,7 +414,6 @@ nav {
 
 /* Styles for menu icons */
 .menuContent .fa-times,
-.menuContent .fa-history,
 .menuContent .fa-github,
 .menuContent .fa-paint-roller {
 	position: absolute;
@@ -429,10 +429,11 @@ nav {
 }
 
 /* Positioning for the history icon within the menu */
-.menuContent .fa-history {
-	right: 20%;
-	bottom: 11%;
-}
+/* use position for new icon */
+/*.menuContent .fa-history {*/
+/*	right: 20%;*/
+/*	bottom: 11%;*/
+/*}*/
 
 /* Positioning for the GitHub icon within the menu */
 .menuContent .fa-github {
@@ -470,7 +471,7 @@ nav {
 
 /* Styles for color items */
 .colorItem {
-	border: 0.5px solid #333333;
+	border: 1px solid #333333;
 	position: absolute;
 	width: 20px;
 	height: 20px;
@@ -529,7 +530,6 @@ button:hover,
 a:hover,
 .done-btn:hover,
 .done-span:hover,
-.fa-trash:hover,
 .fa-undo:hover,
 .fa-edit:hover,
 .fa-times:hover {
@@ -544,10 +544,10 @@ button,
 .fa-times,
 .fa-check,
 #taskStatus,
-.fa-trash,
 .fa-undo,
 nav,
-a {
+a,
+.doneTask .done-btn {
 	transition: all 0.3s ease;
 }
 

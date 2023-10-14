@@ -18,7 +18,7 @@ import { LOCAL_STORAGE_TASKS_KEY } from './constantsModule.js';
  */
 function undoCompletedTask(completedTaskElem, tasksArr) {
 	// Change the status of task to uncompleted in storage
-	const index = getStorageTaskIndex(completedTaskElem.dataset.taskId, tasksArr);
+	const index = getStorageTaskIndex(Number(completedTaskElem.dataset.taskId), tasksArr);
 	tasksArr[index]['status'] = false;
 	delete tasksArr[index]['completedAt'];
 	setToStorage(LOCAL_STORAGE_TASKS_KEY, tasksArr);
@@ -47,8 +47,8 @@ function undoCompletedTask(completedTaskElem, tasksArr) {
  */
 function markTaskAsCompleted(taskElem, taskData, tasksArr, fromStorage = false) {
 	// Change the status of task to completed in storage (if it wasn't from storage)
+	const index = tasksArr.findIndex(task => task.id === taskData.id);
 	if (!fromStorage) {
-		const index = tasksArr.findIndex(task => task.id === taskData.id);
 		tasksArr[index].status = true;
 		tasksArr[index].completedAt = getCurrentDate();
 		setToStorage(LOCAL_STORAGE_TASKS_KEY, tasksArr);
@@ -61,7 +61,7 @@ function markTaskAsCompleted(taskElem, taskData, tasksArr, fromStorage = false) 
 	taskElem.querySelector('.task-info').innerHTML = `
 	<i class="fa-solid fa-circle-check"></i>
         Completed:
-    <span style="color: var(--theme-color);"> ${taskData.completedAt || tasksArr[index].completedAt} </span>
+    <span style="color: var(--theme-color);"> ${(fromStorage) ? tasksArr[index].completedAt : taskData.completedAt} </span>
 	`;
 }
 

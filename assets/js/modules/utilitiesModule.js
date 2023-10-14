@@ -142,7 +142,13 @@ function getParentElementByClassName(element, parentElementClassName) {
 function swapTaskIconsTo(to = 'completed', taskElem) {
 	const spanIconElem = taskElem.querySelector('.done-span');
 	const btnIconElem = taskElem.querySelector('.done-btn');
-	to === 'completed' ? (addClass('fa-undo', btnIconElem, spanIconElem), removeClass('fa-check', btnIconElem, spanIconElem)) : (addClass('fa-check', btnIconElem, spanIconElem), removeClass('fa-undo', btnIconElem, spanIconElem));
+	if (to === 'completed') {
+		addClass('fa-undo', btnIconElem, spanIconElem);
+		removeClass('fa-check', btnIconElem, spanIconElem);
+	} else {
+		addClass('fa-check', btnIconElem, spanIconElem);
+		removeClass('fa-undo', btnIconElem, spanIconElem);
+	}
 }
 
 
