@@ -60,6 +60,7 @@ function createTaskElem(taskId, taskName, taskDesc, taskCreationDate) {
             </div>
             <div class="task-detail">
               <div class="task-title">${taskName}</div>
+			  <br>
               <div class="task-desc">${taskDesc}</div>
             </div>
 			<div class="task-info">

@@ -283,6 +283,11 @@ nav {
 	font-size: 1rem;
 }
 
+.task-desc,
+.task-title {
+	display: inline-block;
+}
+
 /* Styles for the modal for editing tasks */
 .modal {
 	display: none;
@@ -317,14 +322,41 @@ nav {
 	box-shadow: none !important;
 }
 
-.doneTask .task-detail {
-	text-decoration: line-through;
-}
-
 .doneTask .done-btn {
 	background-color: #ff7597 !important;
 	display: block !important;
 	bottom: 0 !important;
+}
+
+/* Line-through animation */
+
+@keyframes strike {
+	0% {
+		width: 0;
+	}
+
+	100% {
+		width: 100%;
+	}
+}
+
+.strike {
+	position: relative;
+}
+
+.strike::after {
+	content: ' ';
+	position: absolute;
+	top: 50%;
+	left: 0;
+	width: 100%;
+	height: 1.5px;
+	background: #ffffff;
+	animation-name: strike;
+	animation-duration: 0.4s;
+	animation-timing-function: linear;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
 }
 
 /* Styles for the close button of the modal */

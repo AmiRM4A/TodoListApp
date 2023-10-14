@@ -25,6 +25,7 @@ function undoCompletedTask(completedTaskElem, tasksArr) {
 
 	// Change the UI status of task to uncompleted in page
 	removeClass('doneTask', completedTaskElem);
+	removeClass('strike', completedTaskElem.querySelector('.task-title'), completedTaskElem.querySelector('.task-desc'));
 	swapTaskIconsTo('uncompleted', completedTaskElem);
 	completedTaskElem.querySelector('.task-info').innerHTML = `
 	<i class="fas fa-info-circle"></i>
@@ -55,6 +56,7 @@ function markTaskAsCompleted(taskElem, taskData, tasksArr, fromStorage = false) 
 
 	// Change the status of task to completed in page
 	addClass('doneTask', taskElem);
+	addClass('strike', taskElem.querySelector('.task-title'), taskElem.querySelector('.task-desc'));
 	swapTaskIconsTo('completed', taskElem);
 	taskElem.querySelector('.task-info').innerHTML = `
 	<i class="fa-solid fa-circle-check"></i>
